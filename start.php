@@ -1,17 +1,24 @@
 <?php
-elgg_register_action("myblog/save", dirname(__FILE__) . "/actions/myblog/save.php");
+elgg_register_action("wikis/save", dirname(__FILE__) . "/actions/wikis/save.php");
 
-elgg_register_page_handler('wiki', 'wiki_page_handler');
+elgg_register_page_handler('socialwiki', 'socialwiki_page_handler');
  
-function wiki_page_handler($segments) {
-	//add page
-    if ($segments[0] == 'add') {
-		include (dirname(__FILE__) . '/pages/wiki/add.php');
-    }
-	//edit page
-	else if ($segments[0] == 'edit') {
-		include (dirname(__FILE__) . '/pages/wiki/edit.php?wiki=');
-	}
+function socialwiki_page_handler($segments) {
+
+	//wiki management pages
+    if ($segments[0] == 'wikis') {
+		switch($segments[1]) {
+			case 'add':
+				include (dirname(__FILE__) . '/pages/wikis/add.php');
+				break;
+			case 'manage':
+				break;
+			default: //wiki overview
+				
+				break;
+		}
+		}
+	
 	//view page
 	else {
 	

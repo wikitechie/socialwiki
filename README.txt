@@ -1,0 +1,1 @@
+==page heirarcy=====wiki management pages===/wikis/: displays list of all wikis/wikis/wikiName : displays wiki profile/wikis/add : adding a new wiki to the system/wikis/manage/wikiName: editing details of a wiki
