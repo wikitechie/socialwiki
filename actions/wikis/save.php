@@ -18,7 +18,7 @@
  
   // save tags as metadata
   $wiki->api = $api;
-  $wiki->wikiurl = $url;
+  $wiki->url = $url;
  
   // save to database
   $wiki->save();
