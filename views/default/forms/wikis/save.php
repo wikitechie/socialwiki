@@ -1,4 +1,10 @@
-<?php $vars['entity'] = get_entity($vars['guid']);?>
+<?php 
+
+$vars['entity'] = get_entity($vars['guid']);
+if ($vars['entity'])
+	echo elgg_view('input/hidden',array('internalname' => 'guid', 'value'=>$vars['entity']->guid));
+	
+?>
 <div>
     <label>Wiki name</label><br />
     <?php echo elgg_view('input/text',array('internalname' => 'title', 'value'=>$vars['entity']->title)); ?>

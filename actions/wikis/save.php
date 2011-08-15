@@ -4,10 +4,19 @@
   $url = get_input('url');
   $api = get_input('api');
   $body = get_input('body');
- 
-  // create a new blog object
-  $wiki = new ElggObject();
-  $wiki->subtype = "wiki";
+  $guid = get_input('guid');
+  
+  if(!$guid){  	
+	  // create a new wiki object
+	  $wiki = new ElggObject();  
+	  $wiki->subtype = "wiki";	
+  }
+  else {
+  	//edit existing wiki object
+  	$wiki = get_entity($guid);
+  } 
+  
+  
   $wiki->title = $title;
   $wiki->description = $body;
  
