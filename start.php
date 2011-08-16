@@ -47,6 +47,37 @@ function socialwiki_page_handler($segments) {
 				echo elgg_view_page("List of supported wikis!", $body);
 				
 				break;
+			default: //then we have a wiki name
+				$wikiname = $segments[1];
+				$type = $segments[2];
+				$wikipage = $segments[3];				
+				
+				switch ($type){
+					case "view":
+						//$wiki = elgg_get_entities_from_metadata(array('name'=>'title', 'value'=>$wikiname));
+						
+						$wiki = get_entity($wikiname);						
+						$_GET["api"] = $wiki->api;
+						$_SERVER['REQUEST_METHOD']="GET";
+						include ('wikimate/globals.php');
+						$requester = new Wikimate();
+						$page = $requester->getPage($wikipage);
+						$title = elgg_view('output/url',array('text'=>$wiki->title,'href'=>$wiki->getURL()))." >> ".($page->getTitle());
+						$body = elgg_view_title($title);
+						include ('wiki2html_machine/parseRaw.inc.php');
+						$parsedText = simpleText($page->getText());
+						$body .= elgg_view('output/longtext',array('value'=>$parsedText));					
+    					$body = elgg_view_layout('two_column_left_sidebar', '', $body);
+						echo elgg_view_page("Social Browser", $body);						
+						break;
+					case "edit":
+						break;
+					case "recentchanges":
+						break;					
+				}
+					
+				
+				break;
 			}
 		}
 	
