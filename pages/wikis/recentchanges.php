@@ -21,7 +21,7 @@
 	$data = array(
 		'list' => 'recentchanges',
 		'rcprop' => 'user|comment|timestamp|title|ids|sizes|redirect|loginfo|flags',
-		'rcend' => $wiki->get('rcstart'),		
+		'rcend' => $wiki->rcstart,		
 		'rclimit' => 10
 	);
 	$results = $requester->query( $data );
