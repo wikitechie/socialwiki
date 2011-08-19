@@ -1,24 +1,2 @@
-<div>Here you can manage your accounts on MediaWiki-based wikis.</div>
+You can handle your wiki users account through <?php echo elgg_view('output/url', array('text' => 'this page', 'href'=>$site->url."socialwiki/wikiusers/".(elgg_get_logged_in_user_guid()), 'encode_text'=>true)); echo "<br>"; ?>.
 
-<?php 
-$wikis = elgg_get_entities(array('types'=>'object', 'subtypes'=>'wiki'));
-$options = array();
-foreach ($wikis as $wiki){
-	$options[$wiki->guid] = $wiki->title;	
-}
-?>
-
-<div>
-<label>Choose a wiki:</label>
-<?php echo elgg_view('input/dropdown', array('options'=>$options));?>
-</div>
-
-<div>
-<label>Username</label>
-<?php echo elgg_view('input/text', array('name'=>'username'));?>
-</div>
-
-<div>
-<label>Password</label>
-<?php echo elgg_view('input/password', array('name'=>'password'));?>
-</div>

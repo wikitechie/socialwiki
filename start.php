@@ -2,9 +2,10 @@
 
 elgg_register_event_handler('init', 'system', 'socialwiki_init');
 
+//registering actions
 elgg_register_action("wikis/save", dirname(__FILE__) . "/actions/wikis/save.php");
-
 elgg_register_action("wikis/delete", dirname(__FILE__) . "/actions/wikis/delete.php");
+elgg_register_action("wikiusers/save", dirname(__FILE__) . "/actions/wikiusers/save.php");
 
 elgg_register_page_handler('socialwiki', 'socialwiki_page_handler');
  
@@ -60,6 +61,9 @@ function socialwiki_page_handler($segments) {
 				break;
 			}
 		}
+	elseif ($segments[0] == 'wikiusers'){
+		include (dirname(__FILE__) . '/pages/wikiusers/add.php');
+	}
 	
 	//view page
 	else {
