@@ -12,8 +12,7 @@
 	if(!$wikiusers)
 		$content .= elgg_view('output/longtext', array('value'=>'You currently have no users!'));
 	else
-		foreach ($wikiusers as $wikiuser)
-			$content .= $wikiuser->title."<br />";
+		$content .= elgg_view_entity_list($wikiusers, array());
 		
 
 	$content .= "<hr />";
