@@ -31,8 +31,19 @@
 	//some code to check the validatiy of our request
 	$changes_count=count($results['query']['recentchanges']);
 	if($results && (count($results)>0) && ($changes_count>0) )		
-		foreach ($results['query']['recentchanges'] as $recentchange){			
-			$check_user = 1; //to be replaced with checking user code
+		foreach ($results['query']['recentchanges'] as $recentchange){
+			$options = array(
+			       'type'	=>'object',
+			       'subtype'=>'wikiuser'
+			,
+			       'metadata_name_value_pairs' => array(
+						array('matadata_name' => 'wikiuser_name','matadata_value' => $recentchange['user']),
+						array('matadata_name' => 'wiki_id','matadata_value' => $wiki->title)
+					),
+			       'metadata_name_value_pairs_operator' => 'AND'
+			) ;
+			$results = elgg_get_entities_from_metadata($options);
+			$check_user = count($results); //to be replaced with checking user code
 			
 			if($check_user){
 				$content .= "<p>".print_r($recentchange, true)."</p>";

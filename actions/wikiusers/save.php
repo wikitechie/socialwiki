@@ -19,6 +19,7 @@
   
   
   $wikiuser->title = $username;
+  $wikiuser->wikiuser_name = $username;
   //$wikiuser->description = $body;
  
   $wikiuser->access_id = ACCESS_PUBLIC;
