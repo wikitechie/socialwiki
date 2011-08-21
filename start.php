@@ -36,17 +36,16 @@ function socialwiki_page_handler($segments) {
 				$wikiname = $segments[1];
 				$type = $segments[2];
 				$wikipage = $segments[3];
+				$wiki = get_entity($wikiname);					
 				
-				//connecting with MediaWiki API
-				$wiki = get_entity($wikiname);						
+				switch ($type){
+					case "view":
+						//connecting with MediaWiki API
 						$_GET["api"] = $wiki->api;
 						$_SERVER['REQUEST_METHOD']="GET";
 						include ('wikimate/globals.php');
 						$requester = new Wikimate();
 						$page = $requester->getPage($wikipage);
-				
-				switch ($type){
-					case "view":
 						include (dirname(__FILE__) . '/pages/wikis/view.php');				
 						break;
 
