@@ -53,6 +53,7 @@ function socialwiki_page_handler($segments) {
 						break;
 						
 					case "recentchanges":
+						$wiki_context = $wikipage;
 						include (dirname(__FILE__) . '/pages/wikis/recentchanges.php');			
 						break;
 				}				

@@ -1,6 +1,6 @@
 <?php
 	
-	$title = elgg_view('output/url',array('text'=>$wiki->title,'href'=>$wiki->getURL()));
+	$title = "Recent changes of ".elgg_view('output/url',array('text'=>$wiki->title,'href'=>$wiki->getURL()));
 	
 	$options = array(
 	       'type'	=>'object',
@@ -13,12 +13,14 @@
 	$results = elgg_get_entities_from_metadata($options);
 	
 	$content = elgg_view_entity_list($results);
+	$context = "wikis/".$wiki->guid."/recentchanges";
 	
 		
 	$params = array(
 		'content' => $content,//]        HTML of main content area
-		'title'=> 'Amjad' ,//]          Title text (override)
-		'filter_context'=>'all',//] Filter context: everyone, friends, mine					
+		'title'=> $title ,//]          Title text (override)
+		'filter_context'=>$wiki_context,//] Filter context: everyone, friends, mine
+		'context' =>$context
 	);	
 	
 	$body = elgg_view_layout('content', $params);
