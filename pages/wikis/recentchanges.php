@@ -52,7 +52,8 @@
 				$wikiactivity->subtype = "wikiactivity";
 				$wikiactivity->title =  $recentchange['title'];
 				$wikiactivity->descritption =  $recentchange['comment'];
-				$wikiactivity->access_id = 2; 
+				$wikiactivity->access_id = 2;
+				$wikiactivity->wiki_id = $wiki->guid;
 				if($wikiactivity->save())		
 					add_to_river(
 						'river/object/wikiactivity/create',
