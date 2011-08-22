@@ -31,7 +31,12 @@ function socialwiki_page_handler($segments) {
 			case 'all':
 				include (dirname(__FILE__) . '/pages/wikis/all.php');				
 				break;
-				
+			case 'recentchanges':
+				$wiki_guid		= $segments[2];
+				$wiki_context	= $segments[3];
+				$wiki			= get_entity($wiki_guid);
+				include (dirname(__FILE__) . '/pages/wikis/recentchanges.php');
+				break;
 			default: //then we have a wiki name
 				$wikiname = $segments[1];
 				$type = $segments[2];
