@@ -8,6 +8,7 @@ function inc_time_str($base,$format="Y-m-d H:i:s")
 }
 
 function sw_update_wiki_changes($wiki) {
+	elgg_load_library("elgg:wikimate");
 	$_GET["api"] = $wiki->api;
 	$_SERVER['REQUEST_METHOD']="GET";
 	if (isset($requester)) unset($requester);

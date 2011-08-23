@@ -12,8 +12,11 @@ function socialwiki_init() {
 	elgg_register_action("wikis/delete", dirname(__FILE__) . "/actions/wikis/delete.php");
 	elgg_register_action("wikiusers/save", dirname(__FILE__) . "/actions/wikiusers/save.php");
 	
+	//registering libs
 	elgg_register_library('elgg:socialwiki', elgg_get_plugins_path() . 'socialwiki/lib/socialwiki.php');
+	elgg_register_library('elgg:wikimate', elgg_get_plugins_path() . 'socialwiki/lib/wikimate/globals.php');
 	
+	elgg_load_library("elgg:socialwiki");
 	elgg_register_plugin_hook_handler('cron', 'minute', 'sw_update_all_changes');
 	elgg_register_page_handler('socialwiki', 'socialwiki_page_handler');
 } 
