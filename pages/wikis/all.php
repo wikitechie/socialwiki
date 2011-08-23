@@ -10,7 +10,7 @@
 	));
 	
 	elgg_pop_breadcrumb();
-	elgg_push_breadcrumb("Wikis");
+	elgg_push_breadcrumb(elgg_echo('socialwiki:wikis'));
 	
 	//elgg_register_title_button('socialwiki/wikis/add','My button');
 	

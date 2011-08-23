@@ -11,6 +11,11 @@ if ($vars['entity'])
 </div>
 
 <div>
+	<label><?php echo elgg_echo("groups:icon"); ?></label><br />
+	<?php echo elgg_view("input/file", array('name' => 'icon')); ?>
+</div>
+
+<div>
     <label>Wiki homepage URL</label><br />
     <?php echo elgg_view('input/text',array('internalname' => 'url', 'value'=>$vars['entity']->url)); ?>
 </div> 
