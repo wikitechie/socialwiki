@@ -2,17 +2,20 @@
 
 elgg_register_event_handler('init', 'system', 'socialwiki_init');
 
-//registering actions
-elgg_register_action("wikis/save", dirname(__FILE__) . "/actions/wikis/save.php");
-elgg_register_action("wikis/delete", dirname(__FILE__) . "/actions/wikis/delete.php");
-elgg_register_action("wikiusers/save", dirname(__FILE__) . "/actions/wikiusers/save.php");
-
-elgg_register_page_handler('socialwiki', 'socialwiki_page_handler');
- 
 function socialwiki_init() {
 	// add a site navigation item
 	$item = new ElggMenuItem('wikis', 'Wikis', 'socialwiki/wikis/all');
 	elgg_register_menu_item('site', $item);
+	
+	//registering actions
+	elgg_register_action("wikis/save", dirname(__FILE__) . "/actions/wikis/save.php");
+	elgg_register_action("wikis/delete", dirname(__FILE__) . "/actions/wikis/delete.php");
+	elgg_register_action("wikiusers/save", dirname(__FILE__) . "/actions/wikiusers/save.php");
+	
+	elgg_register_library('elgg:socialwiki', elgg_get_plugins_path() . 'socialwiki/lib/socialwiki.php');
+	
+	elgg_register_plugin_hook_handler('cron', 'minute', 'sw_update_all_changes');
+	elgg_register_page_handler('socialwiki', 'socialwiki_page_handler');
 } 
  
 function socialwiki_page_handler($segments) {
