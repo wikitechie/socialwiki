@@ -12,8 +12,7 @@
     // start building the main column of the page
     $area2 = elgg_view_title($title);
     
-    elgg_pop_breadcrumb();
-    elgg_push_breadcrumb(elgg_echo('socialwiki:wikis'));
+	elgg_push_breadcrumb(elgg_echo('socialwiki:wikis'),elgg_normalize_url('socialwiki/wikis/all'));
     elgg_push_breadcrumb(elgg_echo('socialwiki:addwiki'));
     
     $form_vars = array(

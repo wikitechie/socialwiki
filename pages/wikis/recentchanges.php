@@ -1,6 +1,6 @@
 <?php
 
-	$title = "Recent wakwakeeks at ".$wiki->title;
+	$title = elgg_echo('socialwiki:recentchanges')." at ".$wiki->title;
 	
 	$options = array(
 	       'type'	=>'object',
@@ -37,9 +37,9 @@
 	);	
 	
 	elgg_pop_breadcrumb();
-	elgg_push_breadcrumb(elgg_view('output/url',array('text'=>'Wikis','href'=>'socialwiki/wikis/all')));
-	elgg_push_breadcrumb(elgg_view('output/url',array('text'=>$wiki->title,'href'=>$wiki->getURL())));
-	elgg_push_breadcrumb("Recent changes");
+	elgg_push_breadcrumb(elgg_echo('socialwiki:wikis'),elgg_normalize_url('socialwiki/wikis/all'));
+	elgg_push_breadcrumb($wiki->title,$wiki->getURL());
+	elgg_push_breadcrumb(elgg_echo('socialwiki:recentchanges'));
 	
 	$body = elgg_view_layout('content', $params);
 		
