@@ -82,5 +82,5 @@ if ((isset($_FILES['icon'])) && (substr_count($_FILES['icon']['type'],'image/'))
   $wiki->save();
  
   // forward user to a page that displays the post
-  forward($filehandler->getURL());
+  forward($wiki->getURL());
 ?>
