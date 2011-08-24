@@ -11,7 +11,7 @@ if ($vars['entity'])
 </div>
 
 <div>
-	<label><?php echo elgg_echo("groups:icon"); ?></label><br />
+	<label><?php echo elgg_echo("wiki:icon"); ?></label><br />
 	<?php echo elgg_view("input/file", array('name' => 'icon')); ?>
 </div>
 

@@ -29,6 +29,7 @@ $english = array(
 	'blog:body' => 'Body',
 	'blog:save_status' => 'Last saved: ',
 	'blog:never' => 'Never',
+	'wiki:icon' => 'Wiki Icon',
 
 	// Statuses
 	'blog:status' => 'Status',
