@@ -30,7 +30,7 @@ function socialwiki_init() {
 	elgg_register_page_handler('wikiicon', 'wikis_icon_handler');
 	
 	//registering url handlers
-	//elgg_register_entity_url_handler("object", "wiki", "wiki_url_handler");
+	elgg_register_entity_url_handler("object", "wiki", "wiki_url_handler");
 	
 	// entity menu
 	elgg_register_plugin_hook_handler('register', 'menu:entity', 'wiki_entity_menu_setup');
