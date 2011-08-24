@@ -7,6 +7,11 @@ function socialwiki_init() {
 	$item = new ElggMenuItem('wikis', 'Wikis', 'wiki/all');
 	elgg_register_menu_item('site', $item);
 	
+	//registering entiities
+	elgg_register_entity_type("object","wiki");
+	elgg_register_entity_type("object","wikiactivity");
+	elgg_register_entity_type("object","wikiuser");
+	
 	//registering actions
 	elgg_register_action("wikis/save", dirname(__FILE__) . "/actions/wikis/save.php");
 	elgg_register_action("wikis/delete", dirname(__FILE__) . "/actions/wikis/delete.php");
