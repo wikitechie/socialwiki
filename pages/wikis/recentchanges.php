@@ -28,18 +28,16 @@
 	$content = elgg_view_entity_list($results);
 	$context = "socialwiki/wikis/".$wiki->guid."/recentchanges";
 	
+	elgg_push_breadcrumb(elgg_echo('socialwiki:wikis'),elgg_normalize_url('socialwiki/wikis/all'));
+	elgg_push_breadcrumb($wiki->title,$wiki->getURL());
+	elgg_push_breadcrumb(elgg_echo('socialwiki:recentchanges'));
 		
 	$params = array(
 		'content' => $content,//]        HTML of main content area
 		'title'=> $title ,//]          Title text (override)
 		'filter_context'=>$wiki_context,//] Filter context: everyone, friends, mine
 		'context' =>$context
-	);	
-	
-	elgg_pop_breadcrumb();
-	elgg_push_breadcrumb(elgg_echo('socialwiki:wikis'),elgg_normalize_url('socialwiki/wikis/all'));
-	elgg_push_breadcrumb($wiki->title,$wiki->getURL());
-	elgg_push_breadcrumb(elgg_echo('socialwiki:recentchanges'));
+	);
 	
 	$body = elgg_view_layout('content', $params);
 		

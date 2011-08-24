@@ -22,7 +22,13 @@ function socialwiki_init() {
 	//registering page handlers
 	elgg_register_page_handler('wiki', 'wiki_page_handler');
 	elgg_register_page_handler("wikiuser", "wikiuser_page_handler");
-} 
+	
+	// entity menu
+	elgg_register_plugin_hook_handler('register', 'menu:entity', 'wiki_entity_menu_setup');
+	
+	
+}
+ 
  
 function wiki_page_handler($segments) {
 
@@ -31,9 +37,8 @@ function wiki_page_handler($segments) {
 			include (dirname(__FILE__) . '/pages/wikis/add.php');
 			break;
 		case "edit":
-		case 'manage':
 			set_input('wiki_guid', $segments[1]);		
-			include (dirname(__FILE__) . '/pages/wikis/manage.php');
+			include (dirname(__FILE__) . '/pages/wikis/edit.php');
 			break;
 		case 'all':
 			include (dirname(__FILE__) . '/pages/wikis/all.php');				
@@ -57,4 +62,41 @@ function wikiuser_page_handler($segments) {
 	include (dirname(__FILE__) . '/pages/wikiusers/add.php');
 
 }
+
+/**
+ * Add particular blog links/info to wiki menu
+ */
+function wiki_entity_menu_setup($hook, $type, $return, $params) {
+	if (elgg_in_context('widgets')) {
+		return $return;
+	}
+
+	$entity = $params['entity'];
+	$handler = elgg_extract('handler', $params, false);
+	if ($handler != 'wiki') {
+		return $return;
+	}
+
+	$options = array(
+		'name' => 'permalink',
+		'text' => 'Permalink',
+		'href' => $entity->getURL(),
+		'priority' => 150,
+	);
+	$return[0] = ElggMenuItem::factory($options);
+	
+	$options = array(
+		'name' => 'url',
+		'text' => 'URL',
+		'href' => $entity->url,
+		'priority' => 150,
+	);
+	$return[1] = ElggMenuItem::factory($options);	
+	
+	
+
+	return $return;
+}
+
+
 ?>

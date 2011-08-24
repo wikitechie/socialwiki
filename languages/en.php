@@ -68,6 +68,9 @@ $english = array(
 	'socialwiki:wikis' => 'Wikis',
 	'socialwiki:addwiki' => 'Add a new wiki',
 	'socialwiki:recentchanges' => 'Recent changes',
+
+	'wiki:add'=>'Add a wiki',
+	'wiki:all'=>'All wikis',
 );
 
 add_translation('en', $english);
