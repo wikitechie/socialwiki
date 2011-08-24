@@ -1,5 +1,6 @@
 <?php
 	$wiki = get_entity(get_input("wiki_guid"));
+	$wiki_context = get_input("context");
 	$title = elgg_echo('socialwiki:recentchanges')." at ".$wiki->title;
 	
 	$options = array(
