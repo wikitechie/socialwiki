@@ -31,6 +31,10 @@ function socialwiki_init() {
 	// entity menu
 	elgg_register_plugin_hook_handler('register', 'menu:entity', 'wiki_entity_menu_setup');
 	
+	//wiki thumbnail
+	elgg_register_plugin_hook_handler('entity:icon:url', 'object', 'wikis_icon_url_override');
+	
+	
 	
 }
  
@@ -106,6 +110,25 @@ function wiki_entity_menu_setup($hook, $type, $return, $params) {
 	);
 	array_push($return, ElggMenuItem::factory($options));	
 	
+
+	return $return;
+}
+
+function wikis_icon_url_override($hook, $type, $returnvalue, $params) {
+	$wiki = $params['entity'];
+	$size = $params['size'];
+
+	if (isset($wiki->icontime)) {
+		// return thumbnail
+		$filehandler = new ElggFile();
+		$filehandler->owner_guid = $wiki->owner_guid;
+		$filehandler->setFilename("wikis/" . $wiki->guid . $size . ".jpg");
+		
+		$icontime = $wiki->icontime;
+		//return "wikiicon/$wiki->guid/$size/$icontime.jpg";
+		
+		return $filehandler->getFilenameOnFilestore();
+	}
 
 	return $return;
 }

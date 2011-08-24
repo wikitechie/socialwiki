@@ -69,11 +69,13 @@ if ((isset($_FILES['icon'])) && (substr_count($_FILES['icon']['type'],'image/'))
 		$thumb->setFilename($prefix."large.jpg");
 		$thumb->open("write");
 		$thumb->write($thumblarge);
+		$return = $thumb->getFilenameOnFilestore();
 		$thumb->close();
+		
 
 		$wiki->icontime = time();
-		$wiki->thumbnail = $filehandler->getURL();
-		system_message("File passed!");
+		
+		system_message("d".$wiki->icontime."d");
 		
 	}
 }
@@ -82,5 +84,5 @@ if ((isset($_FILES['icon'])) && (substr_count($_FILES['icon']['type'],'image/'))
   $wiki->save();
  
   // forward user to a page that displays the post
-  forward($filehandler->getURL());
+  //forward($filehandler->getURL());
 ?>
