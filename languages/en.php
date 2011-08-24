@@ -5,12 +5,14 @@
  */
 
 $english = array(
-	'blog' => 'Blogs',
-	'blog:blogs' => 'Blogs',
+	'wiki' => 'Wikis',
+	'wiki:wikis' => 'Wikis',
 	'blog:revisions' => 'Revisions',
 	'blog:archives' => 'Archives',
 	'blog:blog' => 'Blog',
-	'item:object:blog' => 'Blogs',
+	'item:object:wiki' => 'Wikis',
+	'item:object:wikiactivity' => 'Wiki Activities',
+	'item:object:wikiuser' => 'Wiki Users',
 
 	'blog:title:user_blogs' => '%s\'s blogs',
 	'blog:title:all_blogs' => 'All site blogs',
@@ -54,7 +56,8 @@ $english = array(
 
 	// river
 	'river:create:object:wikiactivity' => '%s wikied the page %s',
-	'river:comment:object:blog' => '%s commented on the blog %s',
+	'river:comment:object:wikiactivity' => '%s commented on the edit %s',
+	'river:comment:object:wiki' => '%s commented on the wiki %s',
 
 	// notifications
 	'blog:newpost' => 'A new blog post',
