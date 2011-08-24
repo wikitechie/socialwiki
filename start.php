@@ -66,7 +66,7 @@ function wiki_page_handler($segments) {
 		case "view":
 			set_input('wiki_guid', $segments[1]);
 			if (isset($segments[2])) set_input("wiki_page", $segments[2]);
-			else set_input("wiki_page", "Main Page");
+			else set_input("wiki_page", "SETI@Home");
 			#FIXME: "replace Main Page" with the real main page name
 			include (dirname(__FILE__) . '/pages/wikis/view.php');	
 			break;			
