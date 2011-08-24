@@ -88,7 +88,7 @@ function wiki_entity_menu_setup($hook, $type, $return, $params) {
 		'href' => $entity->getURL(),
 		'priority' => 150,
 	);
-	$return[0] = ElggMenuItem::factory($options);
+	array_push($return, ElggMenuItem::factory($options));
 	
 	$options = array(
 		'name' => 'url',
@@ -96,8 +96,15 @@ function wiki_entity_menu_setup($hook, $type, $return, $params) {
 		'href' => $entity->url,
 		'priority' => 150,
 	);
-	$return[1] = ElggMenuItem::factory($options);	
+	array_push($return, ElggMenuItem::factory($options));	
 	
+	$options = array(
+		'name' => 'recentchanges',
+		'text' => 'Recent changes',
+		'href' => elgg_normalize_url('activity/all?type=object&subtype=wikiactivity'),
+		'priority' => 150,
+	);
+	array_push($return, ElggMenuItem::factory($options));	
 	
 
 	return $return;
