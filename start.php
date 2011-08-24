@@ -27,12 +27,14 @@ function socialwiki_init() {
 	//registering page handlers
 	elgg_register_page_handler('wiki', 'wiki_page_handler');
 	elgg_register_page_handler("wikiuser", "wikiuser_page_handler");
+	elgg_register_page_handler('wikiicon', 'wikis_icon_handler');
 	
 	//registering url handlers
 	elgg_register_entity_url_handler("object", "wiki", "wiki_url_handler");
 	
 	// entity menu
 	elgg_register_plugin_hook_handler('register', 'menu:entity', 'wiki_entity_menu_setup');
+	elgg_register_plugin_hook_handler('entity:icon:url', 'object', 'wikis_icon_url_override');
 	
 	
 }
@@ -133,4 +135,39 @@ function wiki_url_handler($entity) {
 	return "wiki/view/{$entity->guid}/$friendly_title";
 }
 
+/**
+* Handle wiki icons.
+*
+* @param unknown_type $page
+*/
+function wikis_icon_handler($page) {
+
+	// The username should be the file we're getting
+	if (isset($page[0])) {
+		set_input('wiki_guid', $page[0]);
+	}
+	if (isset($page[1])) {
+		set_input('size', $page[1]);
+	}
+	// Include the standard profile index
+	$plugin_dir = elgg_get_plugins_path();
+	include("$plugin_dir/socialwiki/icon.php");
+}
+/**
+* Override the default entity icon for wikis
+*
+* @return string Relative URL
+*/
+function wikis_icon_url_override($hook, $type, $returnvalue, $params) {
+	$wiki = $params['entity'];
+	$size = $params['size'];
+
+	if (isset($wiki->icontime)) {
+		// return thumbnail
+		$icontime = $wiki->icontime;
+		return "wikiicon/$wiki->guid/$size/$icontime.jpg";
+	}
+
+	return "mod/wikis/graphics/default{$size}.gif";
+}
 ?>
