@@ -30,7 +30,7 @@ function socialwiki_init() {
 	elgg_register_page_handler('wikiicon', 'wikis_icon_handler');
 	
 	//registering url handlers
-	elgg_register_entity_url_handler("object", "wiki", "wiki_url_handler");
+	//elgg_register_entity_url_handler("object", "wiki", "wiki_url_handler");
 	
 	// entity menu
 	elgg_register_plugin_hook_handler('register', 'menu:entity', 'wiki_entity_menu_setup');
@@ -66,7 +66,7 @@ function wiki_page_handler($segments) {
 		case "view":
 			set_input('wiki_guid', $segments[1]);
 			if (isset($segments[2])) set_input("wiki_page", $segments[2]);
-			else set_input("wiki_page", "Main Page");
+			else set_input("wiki_page", "SETI@Home");
 			#FIXME: "replace Main Page" with the real main page name
 			include (dirname(__FILE__) . '/pages/wikis/view.php');	
 			break;			
