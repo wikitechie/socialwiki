@@ -45,6 +45,7 @@ function wiki_page_handler($segments) {
 			include (dirname(__FILE__) . '/pages/wikis/add.php');
 			break;
 		case "edit":
+			gatekeeper();
 			set_input('wiki_guid', $segments[1]);		
 			include (dirname(__FILE__) . '/pages/wikis/edit.php');
 			break;
