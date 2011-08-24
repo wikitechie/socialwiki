@@ -28,6 +28,9 @@ function socialwiki_init() {
 	elgg_register_page_handler('wiki', 'wiki_page_handler');
 	elgg_register_page_handler("wikiuser", "wikiuser_page_handler");
 	
+	//registering url handlers
+	elgg_register_entity_url_handler("object", "wiki", "wiki_url_handler");
+	
 	// entity menu
 	elgg_register_plugin_hook_handler('register', 'menu:entity', 'wiki_entity_menu_setup');
 	
@@ -55,7 +58,9 @@ function wiki_page_handler($segments) {
 			break;
 		case "view":
 			set_input('wiki_guid', $segments[1]);
-			set_input("wiki_page", $segments[2]);
+			if (isset($segments[2])) set_input("wiki_page", $segments[2]);
+			else set_input("wiki_page", "Main Page");
+			#FIXME: "replace Main Page" with the real main page name
 			include (dirname(__FILE__) . '/pages/wikis/view.php');	
 			break;			
 	}
@@ -110,5 +115,21 @@ function wiki_entity_menu_setup($hook, $type, $return, $params) {
 	return $return;
 }
 
+/**
+* Format and return the URL for wikis.
+*
+* @param ElggObject $entity Blog object
+* @return string URL of blog.
+*/
+function wiki_url_handler($entity) {
+	if (!$entity->getOwnerEntity()) {
+		// default to a standard view if no owner.
+		return FALSE;
+	}
+
+	$friendly_title = elgg_get_friendly_title($entity->title);
+
+	return "wiki/view/{$entity->guid}/$friendly_title";
+}
 
 ?>
