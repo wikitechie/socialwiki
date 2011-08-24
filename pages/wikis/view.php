@@ -2,6 +2,7 @@
 	elgg_load_library("elgg:wikimate");
 	$wiki = get_entity(get_input("wiki_guid"));
 	$wiki_page = get_input("wiki_page","MainPage");
+	#FIXME: get_input() is not giving default values !!
 	$_GET["api"] = $wiki->api;
 	$_SERVER['REQUEST_METHOD']="GET";
 	$requester = new Wikimate();

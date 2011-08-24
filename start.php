@@ -27,9 +27,14 @@ function socialwiki_init() {
 	//registering page handlers
 	elgg_register_page_handler('wiki', 'wiki_page_handler');
 	elgg_register_page_handler("wikiuser", "wikiuser_page_handler");
+	elgg_register_page_handler('wikiicon', 'wikis_icon_handler');
+	
+	//registering url handlers
+	elgg_register_entity_url_handler("object", "wiki", "wiki_url_handler");
 	
 	// entity menu
 	elgg_register_plugin_hook_handler('register', 'menu:entity', 'wiki_entity_menu_setup');
+	elgg_register_plugin_hook_handler('entity:icon:url', 'object', 'wikis_icon_url_override');
 	
 	//wiki thumbnail
 	elgg_register_plugin_hook_handler('entity:icon:url', 'object', 'wikis_icon_url_override');
@@ -46,6 +51,7 @@ function wiki_page_handler($segments) {
 			include (dirname(__FILE__) . '/pages/wikis/add.php');
 			break;
 		case "edit":
+			gatekeeper();
 			set_input('wiki_guid', $segments[1]);		
 			include (dirname(__FILE__) . '/pages/wikis/edit.php');
 			break;
@@ -59,7 +65,9 @@ function wiki_page_handler($segments) {
 			break;
 		case "view":
 			set_input('wiki_guid', $segments[1]);
-			set_input("wiki_page", $segments[2]);
+			if (isset($segments[2])) set_input("wiki_page", $segments[2]);
+			else set_input("wiki_page", "Main Page");
+			#FIXME: "replace Main Page" with the real main page name
 			include (dirname(__FILE__) . '/pages/wikis/view.php');	
 			break;			
 	}
@@ -114,24 +122,58 @@ function wiki_entity_menu_setup($hook, $type, $return, $params) {
 	return $return;
 }
 
+
+/**
+* Format and return the URL for wikis.
+*
+* @param ElggObject $entity Blog object
+* @return string URL of blog.
+*/
+function wiki_url_handler($entity) {
+	if (!$entity->getOwnerEntity()) {
+		// default to a standard view if no owner.
+		return FALSE;
+	}
+
+	$friendly_title = elgg_get_friendly_title($entity->title);
+
+	return "wiki/view/{$entity->guid}/$friendly_title";
+}
+
+/**
+* Handle wiki icons.
+*
+* @param unknown_type $page
+*/
+function wikis_icon_handler($page) {
+
+	// The username should be the file we're getting
+	if (isset($page[0])) {
+		set_input('wiki_guid', $page[0]);
+	}
+	if (isset($page[1])) {
+		set_input('size', $page[1]);
+	}
+	// Include the standard profile index
+	$plugin_dir = elgg_get_plugins_path();
+	include("$plugin_dir/socialwiki/icon.php");
+}
+/**
+* Override the default entity icon for wikis
+*
+* @return string Relative URL
+*/
+
 function wikis_icon_url_override($hook, $type, $returnvalue, $params) {
 	$wiki = $params['entity'];
 	$size = $params['size'];
 
 	if (isset($wiki->icontime)) {
 		// return thumbnail
-		$filehandler = new ElggFile();
-		$filehandler->owner_guid = $wiki->owner_guid;
-		$filehandler->setFilename("wikis/" . $wiki->guid . $size . ".jpg");
-		
 		$icontime = $wiki->icontime;
-		//return "wikiicon/$wiki->guid/$size/$icontime.jpg";
-		
-		return $filehandler->getFilenameOnFilestore();
+		return "wikiicon/$wiki->guid/$size/$icontime.jpg";
 	}
 
-	return $return;
+	return "mod/groups/graphics/default{$size}.gif";
 }
-
-
 ?>
