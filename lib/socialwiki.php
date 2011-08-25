@@ -40,7 +40,7 @@ function sw_update_wiki_changes($wiki) {
 			$user_results = elgg_get_entities_from_metadata($options);
 			
 			$check_user = count($user_results);
-				
+			print_r($results['query']['recentchanges']);
 			if($check_user){
 				$actor = $user_results[0]; 
 				$user_guid = $actor->getOwnerGUID(); // getting author name
@@ -69,6 +69,7 @@ function sw_update_wiki_changes($wiki) {
 	else
 	{
 		echo "no changes";
+		echo "<br/> rcstart : $wiki->rcstart <br/>";
 	}
 }
 function sw_update_all_changes() {
