@@ -5,7 +5,7 @@ function inc_time_str($base,$format="Y-m-d H:i:s")
 {
 	$temp	=strtotime($base);
 	$newtime=strtotime("+1 second",$temp);
-	$newtime=date($format,$newtime);
+	$newtime=gmdate($format,$newtime);
 	return $newtime;
 }
 
@@ -26,44 +26,50 @@ function sw_update_wiki_changes($wiki) {
 	//some code to check the validatiy of our request
 	$changes_count=count($results['query']['recentchanges']);
 	if($results && (count($results)>0) && ($changes_count>0) )
-	foreach ($results['query']['recentchanges'] as $recentchange){
-		$options = array(
-				'type'		=> 'object',
-				'subtype'	=> 'wikiuser',
-				'metadata_name_value_pairs' => array(
-						array('name' => 'wikiuser_name','value' => $recentchange['user']),
-						array('name' => 'wiki_id','value' => $wiki->title)
-				),
-				'metadata_name_value_pairs_operator' => 'AND'
-		) ;
-		$user_results = elgg_get_entities_from_metadata($options);
-		
-		$check_user = count($user_results);
+	{
+		foreach ($results['query']['recentchanges'] as $recentchange){
+			$options = array(
+					'type'		=> 'object',
+					'subtype'	=> 'wikiuser',
+					'metadata_name_value_pairs' => array(
+							array('name' => 'wikiuser_name','value' => $recentchange['user']),
+							array('name' => 'wiki_id','value' => $wiki->title)
+					),
+					'metadata_name_value_pairs_operator' => 'AND'
+			) ;
+			$user_results = elgg_get_entities_from_metadata($options);
 			
-		if($check_user){
-			$actor = $user_results[0]; 
-			$user_guid = $actor->getOwnerGUID(); // getting author name
-			$content .= "<p>".print_r($recentchange, true)."</p>";
-			$wikiactivity = new ElggObject();
-			$wikiactivity->subtype = "wikiactivity";
-			$wikiactivity->title =  $recentchange['title'];
-			$wikiactivity->descritption =  $recentchange['comment'];
-			$wikiactivity->access_id = 2;
-			$wikiactivity->wiki_id = $wiki->guid;
-			if($wikiactivity->save())
-			add_to_river(
-							'river/object/wikiactivity/create',
-							'create',
-			$user_guid,
-			$wikiactivity->getGUID());
+			$check_user = count($user_results);
+				
+			if($check_user){
+				$actor = $user_results[0]; 
+				$user_guid = $actor->getOwnerGUID(); // getting author name
+				$content .= "<p>".print_r($recentchange, true)."</p>";
+				$wikiactivity = new ElggObject();
+				$wikiactivity->subtype = "wikiactivity";
+				$wikiactivity->title =  $recentchange['title'];
+				$wikiactivity->descritption =  $recentchange['comment'];
+				$wikiactivity->access_id = 2;
+				$wikiactivity->wiki_id = $wiki->guid;
+				if($wikiactivity->save())
+				add_to_river(
+								'river/object/wikiactivity/create',
+								'create',
+				$user_guid,
+				$wikiactivity->getGUID());
+			}
 		}
+		//recording last time we visited fetched this wiki
+		$rcts=$results['query']['recentchanges'][0]['timestamp'];
+		$wiki->rcstart = inc_time_str($rcts);
+		$wiki->last_rcid = $results['query']['recentchanges'][0]['rcid'];
+		$wiki->save();
+		echo "done";
 	}
-	//recording last time we visited fetched this wiki
-	$rcts=$results['query']['recentchanges'][0]['timestamp'];
-	$wiki->rcstart = inc_time_str($rcts);
-	$wiki->last_rcid = $results['query']['recentchanges'][0]['rcid'];
-	$wiki->save();
-	echo "done";
+	else
+	{
+		echo "no changes";
+	}
 }
 function sw_update_all_changes() {
 	$wikis = elgg_get_entities(array(
