@@ -8,6 +8,19 @@
     elgg_push_breadcrumb($wiki->title);
     
     $body = elgg_view_entity($wiki);
+    
+    $body .="<hr />";
+    
+    $body .=elgg_view_title("People wikiing on this wiki");
+    
+    
+    
+	$wikiusers = elgg_get_entities(array('types'=>'object', 'subtypes'=>'wikiuser'));
+	if(!$wikiusers)
+		$body .= elgg_view('output/longtext', array('value'=>'There are currently no users wikiing on this wiki!'));
+	else
+		$body .= elgg_view_entity_list($wikiusers, array());
+    
    	//layout the page
     $body = elgg_view_layout('two_column_left_sidebar', '', $body);
  

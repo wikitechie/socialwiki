@@ -8,7 +8,11 @@
  * @subpackage Core
  */
 
-$icon = elgg_view_entity_icon($vars['entity'], 'small');
+
+$wikiuser = $vars['entity'];
+$wiki = get_entity($wikiuser->wiki_id);
+
+$icon = elgg_view_entity_icon($wiki, 'small');
 
 $title = $vars['entity']->title;
 if (!$title) {
@@ -19,7 +23,12 @@ if (!$title) {
 }
 
 if (elgg_instanceof($vars['entity'], 'object')) {
-	$metadata = elgg_view('navigation/menu/metadata', $vars);
+	$metadata = elgg_view_menu('entity', array(
+		'entity' => $wikiuser,
+		'handler' => 'wikiuser',
+		'sort_by' => 'priority',
+		'class' => 'elgg-menu-hz',
+	));
 }
 
 $owner_link = '';
@@ -33,7 +42,7 @@ if ($owner) {
 
 $date = elgg_view_friendly_time($vars['entity']->time_created);
 
-$subtitle = "$owner_link $date";
+$subtitle = $wiki->title;
 
 $params = array(
 	'entity' => $vars['entity'],

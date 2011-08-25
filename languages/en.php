@@ -75,6 +75,10 @@ $english = array(
 
 	'wiki:add'=>'Add a wiki',
 	'wiki:all'=>'All wikis',
+
+	'wikiuser'=>'Wikiusers',
+	'wikiuser:add'=>'Add a wikiuser',
+	'wikiuser:my'=>'My wikiusers',	
 );
 
 add_translation('en', $english);
