@@ -1,4 +1,6 @@
 <?php
+define("WIKI_USERNAME", "");
+define("WIKI_PASSWORD", "");
 function inc_time_str($base,$format="Y-m-d H:i:s")
 {
 	$temp	=strtotime($base);
@@ -9,10 +11,8 @@ function inc_time_str($base,$format="Y-m-d H:i:s")
 
 function sw_update_wiki_changes($wiki) {
 	elgg_load_library("elgg:wikimate");
-	$_GET["api"] = $wiki->api;
-	$_SERVER['REQUEST_METHOD']="GET";
 	if (isset($requester)) unset($requester);
-	$requester = new Wikimate;
+	$requester = new Wikimate($wiki->api);
 	$data = array(
 			'list' => 'recentchanges',
 			'rcprop' => 'user|comment|timestamp|title|ids|sizes|redirect|loginfo|flags',
