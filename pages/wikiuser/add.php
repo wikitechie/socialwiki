@@ -1,6 +1,5 @@
 <?php 
     $wikiuser = get_entity(get_input('wikiuser_guid'));
-	$content .= elgg_view_title('Your account');
  
 	$wikis = elgg_get_entities(array('types'=>'object', 'subtypes'=>'wiki'));
 	$options = array();
@@ -8,6 +7,7 @@
 		$options[$wiki->guid] = $wiki->title;	
 	}
 	$content .= elgg_view_form('wikiuser/save',array(),array('entity'=>$wikiuser,'options' => $options));
+	
 	$params = array(
 		'content' => $content,//]        HTML of main content area
 		'title'=> $title ,//]          Title text (override)

@@ -1,3 +1,10 @@
+<?php 
+
+if ($vars['entity'])
+	echo elgg_view('input/hidden',array('internalname' => 'guid', 'value'=>$vars['entity']->guid));
+	
+?>
+
 <div>
 <label>Username</label>
 <?php echo elgg_view('input/text', array('internalname'=>'username', 'value'=>$vars['entity']->wikiuser_name));?>
