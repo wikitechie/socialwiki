@@ -42,6 +42,7 @@ function sw_update_wiki_changes($wiki) {
 			$check_user = count($user_results);
 			print_r($results['query']['recentchanges']);
 			if($check_user){
+				echo "user checked";
 				$actor = $user_results[0]; 
 				$user_guid = $actor->getOwnerGUID(); // getting author name
 				$content .= "<p>".print_r($recentchange, true)."</p>";
