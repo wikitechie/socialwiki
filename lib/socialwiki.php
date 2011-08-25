@@ -1,4 +1,6 @@
 <?php
+define("WIKI_USERNAME", "");
+define("WIKI_PASSWORD", "");
 function inc_time_str($base,$format="Y-m-d H:i:s")
 {
 	$temp	=strtotime($base);
@@ -9,10 +11,8 @@ function inc_time_str($base,$format="Y-m-d H:i:s")
 
 function sw_update_wiki_changes($wiki) {
 	elgg_load_library("elgg:wikimate");
-	$_GET["api"] = $wiki->api;
-	$_SERVER['REQUEST_METHOD']="GET";
 	if (isset($requester)) unset($requester);
-	$requester = new Wikimate;
+	$requester = new Wikimate($wiki->api);
 	$data = array(
 			'list' => 'recentchanges',
 			'rcprop' => 'user|comment|timestamp|title|ids|sizes|redirect|loginfo|flags',
@@ -28,21 +28,21 @@ function sw_update_wiki_changes($wiki) {
 	if($results && (count($results)>0) && ($changes_count>0) )
 	foreach ($results['query']['recentchanges'] as $recentchange){
 		$options = array(
-				       'type'	=>'object',
-				       'subtype'=>'wikiuser'
-		,
-				       'metadata_name_value_pairs' => array(
-		array('name' => 'wikiuser_name','value' => $recentchange['user']),
-		array('name' => 'wiki_id','value' => $wiki->title)
-		),
-				       'metadata_name_value_pairs_operator' => 'AND'
+				'type'		=> 'object',
+				'subtype'	=> 'wikiuser',
+				'metadata_name_value_pairs' => array(
+						array('name' => 'wikiuser_name','value' => $recentchange['user']),
+						array('name' => 'wiki_id','value' => $wiki->title)
+				),
+				'metadata_name_value_pairs_operator' => 'AND'
 		) ;
-		$results = elgg_get_entities_from_metadata($options);
+		$user_results = elgg_get_entities_from_metadata($options);
 		
-		$check_user = count($results);
+		$check_user = count($user_results);
 			
 		if($check_user){
-			$user_guid = $results->getOwnerGUID(); // getting author name
+			$actor = $user_results[0]; 
+			$user_guid = $actor->getOwnerGUID(); // getting author name
 			$content .= "<p>".print_r($recentchange, true)."</p>";
 			$wikiactivity = new ElggObject();
 			$wikiactivity->subtype = "wikiactivity";
@@ -60,10 +60,10 @@ function sw_update_wiki_changes($wiki) {
 	}
 	//recording last time we visited fetched this wiki
 	$rcts=$results['query']['recentchanges'][0]['timestamp'];
-	$wiki->rcend = inc_time_str($rcts);
+	$wiki->rcstart = inc_time_str($rcts);
 	$wiki->last_rcid = $results['query']['recentchanges'][0]['rcid'];
 	$wiki->save();
-	
+	echo "done";
 }
 function sw_update_all_changes() {
 	$wikis = elgg_get_entities(array(
