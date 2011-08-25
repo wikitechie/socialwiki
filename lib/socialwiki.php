@@ -36,12 +36,12 @@ function sw_update_wiki_changes($wiki) {
 				),
 				'metadata_name_value_pairs_operator' => 'AND'
 		) ;
-		$results = elgg_get_entities_from_metadata($options);
+		$user_results = elgg_get_entities_from_metadata($options);
 		
-		$check_user = count($results);
+		$check_user = count($user_results);
 			
 		if($check_user){
-			$actor = $results[0]; 
+			$actor = $user_results[0]; 
 			$user_guid = $actor->getOwnerGUID(); // getting author name
 			$content .= "<p>".print_r($recentchange, true)."</p>";
 			$wikiactivity = new ElggObject();
@@ -63,7 +63,7 @@ function sw_update_wiki_changes($wiki) {
 	$wiki->rcstart = inc_time_str($rcts);
 	$wiki->last_rcid = $results['query']['recentchanges'][0]['rcid'];
 	$wiki->save();
-	
+	echo "done";
 }
 function sw_update_all_changes() {
 	$wikis = elgg_get_entities(array(
