@@ -15,7 +15,8 @@ function socialwiki_init() {
 	//registering actions
 	elgg_register_action("wikis/save", dirname(__FILE__) . "/actions/wikis/save.php");
 	elgg_register_action("wikis/delete", dirname(__FILE__) . "/actions/wikis/delete.php");
-	elgg_register_action("wikiusers/save", dirname(__FILE__) . "/actions/wikiusers/save.php");
+	elgg_register_action("wikiuser/save", dirname(__FILE__) . "/actions/wikiuser/save.php");
+	elgg_register_action("wikiuser/delete", dirname(__FILE__) . "/actions/wikiuser/delete.php");
 	
 	//registering libs
 	elgg_register_library('elgg:socialwiki', elgg_get_plugins_path() . 'socialwiki/lib/socialwiki.php');
@@ -34,7 +35,10 @@ function socialwiki_init() {
 	
 	// entity menu
 	elgg_register_plugin_hook_handler('register', 'menu:entity', 'wiki_entity_menu_setup');
+	elgg_register_plugin_hook_handler('register', 'menu:entity', 'wikiuser_entity_menu_setup');
+	
 	elgg_register_plugin_hook_handler('entity:icon:url', 'object', 'wikis_icon_url_override');
+	
 	
 	//wiki thumbnail
 	elgg_register_plugin_hook_handler('entity:icon:url', 'object', 'wikis_icon_url_override');
@@ -76,7 +80,25 @@ function wiki_page_handler($segments) {
 }
 
 function wikiuser_page_handler($segments) {
-	include (dirname(__FILE__) . '/pages/wikiusers/add.php');
+	
+		
+	switch($segments[0]) {
+			case 'add':
+				include (dirname(__FILE__) . '/pages/wikiuser/add.php');
+			break;
+				break;
+			case "edit":
+				gatekeeper();
+				set_input('wikiuser_guid', $segments[1]);		
+				include (dirname(__FILE__) . '/pages/wikiuser/add.php');
+			break;
+			case 'all':
+			default:
+				include (dirname(__FILE__) . '/pages/wikiuser/all.php');
+			break;
+			
+	}
+	
 
 }
 
@@ -120,6 +142,29 @@ function wiki_entity_menu_setup($hook, $type, $return, $params) {
 	
 
 	return $return;
+}
+
+/**
+ * Add particular blog links/info to wikiuser menu
+ */
+function wikiuser_entity_menu_setup($hook, $type, $return, $params) {
+	if (elgg_in_context('widgets')) {
+		return $return;
+	}
+
+	$entity = $params['entity'];
+	$handler = elgg_extract('handler', $params, false);
+	if ($handler != 'wikiuser') {
+		return $return;
+	}
+	
+	foreach ($return as $index => $item){
+		if (in_array($item->getName(), array( 'likes'))) {
+			unset($return[$index]);		
+	}
+	
+	return $return;
+}
 }
 
 
@@ -174,6 +219,6 @@ function wikis_icon_url_override($hook, $type, $returnvalue, $params) {
 		return "wikiicon/$wiki->guid/$size/$icontime.jpg";
 	}
 
-	return "mod/groups/graphics/default{$size}.gif";
+	return $returnvalue;
 }
 ?>

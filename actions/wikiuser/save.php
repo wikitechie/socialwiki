@@ -1,10 +1,9 @@
 <?php
-  echo "I'm here!";
 
   // get the form input
   $username = get_input('username');
   $password = get_input('password');
-  $wiki_id = get_input('wikiuser_id');
+  $wiki_id = get_input('wiki_id');
   $guid = get_input('guid');
   
   if(!$guid){  	
@@ -26,14 +25,17 @@
  
   // owner is logged in user
   $wikiuser->owner_guid = elgg_get_logged_in_user_guid();
- 
-  $wikiuser->password = $password;
-  $wikiuser->wiki_id = $wiki_id;
+
  
   // save to database
   $wikiuser->save();
+  
+   
+  $wikiuser->password = $password;
+  $wikiuser->wiki_id = $wiki_id;
  
+  $wikiuser->save();
   // forward user to a page that displays the post
-  forward($wikiuser->getURL());
+  forward('/wikiuser');
   
 ?>
