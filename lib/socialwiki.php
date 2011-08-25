@@ -33,7 +33,7 @@ function sw_update_wiki_changes($wiki) {
 					'subtype'	=> 'wikiuser',
 					'metadata_name_value_pairs' => array(
 							array('name' => 'wikiuser_name','value' => $recentchange['user']),
-							array('name' => 'wiki_id','value' => $wiki->title)
+							array('name' => 'wiki_id','value' => $wiki->guid)
 					),
 					'metadata_name_value_pairs_operator' => 'AND'
 			) ;
