@@ -1,4 +1,5 @@
 <?php
+define('DEBUG',1);
 define("WIKI_USERNAME", "");
 define("WIKI_PASSWORD", "");
 /**
@@ -87,6 +88,7 @@ function sw_get_wikiactivity($wiki,$actor_guid,$recentChange){
 	$activity->access_id = ACCESS_PUBLIC;
 	$activity->wiki_id = $wiki->guid;
 	$activity->owner_guid = $actor_guid;
+	return $activity;
 }
 
 /**
@@ -99,22 +101,25 @@ function sw_update_wiki($wiki) {
 	// looking for wikiusers 
 	$users = sw_get_wikiusers($wiki->guid);
 	$users_names = sw_extract($users,'wikiuser_name');
-	$names_users = array_flip($users_names);// this will be sth like ('Mhd'=>4)
+	$users_names = array_flip($users_names);// this will be sth like ('Mhd'=>4)
 	
 	#FIXME do not permit to add users with the same name (file actions/wikiusers/add.php)
 	
 	// querying wikimate
 	$recent_changes = sw_get_recent_changes($wiki); //limit 10
+	sw_log(print_r($recent_changes,true));
 	if (count($recent_changes) == 0) return false;  // no changes 
 	
 	foreach ($recent_changes as $recentChange){
 		//if it's an old change
-		if ($recentChange['rcid'] <= $wiki->rcid) continue;
+		if ($recentChange['rcid'] <= $wiki->last_rcid) continue;
+		sw_log("pass_rcid");
+		sw_log(print_r($users,true));
 		//if change is for non defined wikiuser
 		if (! isset($users_names[$recentChange['user']])) continue ;
-		
+		sw_log("user checked");
 		// searching for author and actor
-		$author_id = $names_users[$recentChange['user']];
+		$author_id = $users_names[$recentChange['user']];
 		$author = $users[$author_id];
 		$actor_guid = $author->getOwnerGUID();
 		
@@ -123,12 +128,12 @@ function sw_update_wiki($wiki) {
 		
 		// adding activity to the river after saving
 		if (! $activity->save()) continue;
-		add_to_river("river/object/wikiactivity/create'",
+		add_to_river("river/object/wikiactivity/create",
 					"create",
 					$actor_guid,
 					$activity->guid
 		);
-		 
+		sw_log("saved");
 	}
 	$rcts=$recent_changes[0]['timestamp'];
 	$wiki->rcstart = $rcts;
@@ -150,4 +155,8 @@ function sw_update_all_wikis() {
 		sw_update_wiki($wiki);
 	}
 	
+}
+
+function sw_log($str){
+	if (DEBUG) echo "<pre>$str</pre>";
 }
