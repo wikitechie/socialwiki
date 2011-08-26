@@ -1,6 +1,14 @@
 <?php
 define("WIKI_USERNAME", "");
 define("WIKI_PASSWORD", "");
+/**
+ * 
+ * increment one second
+ * @param string $base time to be incremented
+ * @param string $format
+ * @deprecated
+ * @return string
+ */
 function inc_time_str($base,$format="Y-m-d H:i:s")
 {
 	$temp	=strtotime($base);
@@ -8,85 +16,138 @@ function inc_time_str($base,$format="Y-m-d H:i:s")
 	$newtime=gmdate($format,$newtime);
 	return $newtime;
 }
+/**
+ * Returns an array of each object member
+ * 
+ * @param string $member_name the name of the field that you want to extract { e.g: $object->name , name is the member_name}
+ * @package socialwiki
+ */
+function sw_extract($array,$member_name){
+	$ext = array();
+	foreach ($array as $obj){
+		$ext[]=$obj->$member_name;
+	}
+	return $ext;
+}
+/**
+ * 
+ * gets all wikiusers of a wiki as array
+ * @param ElggObject $wiki_guid
+ * @return array of ElggObject
+ */
+function sw_get_wikiusers($wiki_guid)
+{
+	$options = array(
+			'type'		=> 'object',
+			'subtype'	=> 'wikiuser',
+			'metadata_name_value_pairs' => array(
+				array('name' => 'wiki_id','value' => $wiki_guid)
+			),
+			'metadata_name_value_pairs_operator' => 'AND'
+	);
+	$users = elgg_get_entities_from_metadata($options);
+	return $users;
+}
 
-function sw_update_wiki_changes($wiki) {
-	elgg_load_library("elgg:wikimate");
-	if (isset($requester)) unset($requester);
+/**
+ * 
+ * gets new recent changes on a wiki .
+ * returns array of recent changes
+ * @param ElggObject $wiki
+ * @param ElggObject $rclimit
+ * @return array
+ */
+function sw_get_recent_changes($wiki,$rclimit=10)
+{
 	$requester = new Wikimate($wiki->api);
 	$data = array(
-			'list' => 'recentchanges',
-			'rcprop' => 'user|comment|timestamp|title|ids|sizes|redirect|loginfo|flags',
-			'rcend' => $wiki->rcstart,		
-			'rclimit' => 10
+					'list' => 'recentchanges',
+					'rcprop' => 'user|comment|timestamp|title|ids|sizes|redirect|loginfo|flags',
+					'rcend' => $wiki->rcstart,		
+					'rclimit' => $rclimit
 	);
 	$results = $requester->query( $data );
-	
-	$content;
-	
-	//some code to check the validatiy of our request
-	$changes_count=count($results['query']['recentchanges']);
-	if($results && (count($results)>0) && ($changes_count>0) )
-	{
-		foreach ($results['query']['recentchanges'] as $key => $recentchange){
-			if ($recentchange['rcid'] > $wiki->last_rcid)
-			{
-				$options = array(
-						'type'		=> 'object',
-						'subtype'	=> 'wikiuser',
-						'metadata_name_value_pairs' => array(
-								array('name' => 'wikiuser_name','value' => $recentchange['user']),
-								array('name' => 'wiki_id','value' => $wiki->guid)
-						),
-						'metadata_name_value_pairs_operator' => 'AND'
-				) ;
-				$user_results = elgg_get_entities_from_metadata($options);
-				
-				$check_user = count($user_results);
-				print_r($results['query']['recentchanges']);
-				if($check_user){
-					echo "user checked";
-					$actor = $user_results[0]; 
-					$user_guid = $actor->getOwnerGUID(); // getting author name
-					$content .= "<p>".print_r($recentchange, true)."</p>";
-					$wikiactivity = new ElggObject();
-					$wikiactivity->subtype = "wikiactivity";
-					$wikiactivity->title =  $recentchange['title'];
-					$wikiactivity->descritption =  $recentchange['comment'];
-					$wikiactivity->access_id = 2;
-					$wikiactivity->wiki_id = $wiki->guid;
-					if($wikiactivity->save())
-					add_to_river(
-									'river/object/wikiactivity/create',
-									'create',
-					$user_guid,
-					$wikiactivity->getGUID());
-				}
-				echo "done";
-				echo $wiki->last_rcid;
-				$lastkey = $key;
-			}
-			//recording last time we visited fetched this wiki
-			$rcts=$results['query']['recentchanges'][$lastkey]['timestamp'];
-			$wiki->rcstart = $rcts;
-			$wiki->last_rcid = $results['query']['recentchanges'][$lastkey]['rcid'];
-			$wiki->save();
-			
-		}
-	}
-	else
-	{
-		echo "no changes";
-		echo "<br/> rcstart : $wiki->rcstart <br/>";
-	}
+	$recent_changes = $results['query']['recentchanges'];
+	return $recent_changes;	
 }
-function sw_update_all_changes() {
+
+/**
+ * 
+ * creates a new wikiactivity object and fills it from a recent change
+ * @param ElggOject	$wiki
+ * @param int		$actor_guid
+ * @param array		$recentChange
+ * @return ElggObject
+ */
+function sw_get_wikiactivity($wiki,$actor_guid,$recentChange){
+	$activity = new ElggObject();
+	$activity->subtype = "wikiactivity";
+	$activity->title =  $recentChange['title'];
+	$activity->descritption =  $recentChange['comment'];
+	$activity->access_id = ACCESS_PUBLIC;
+	$activity->wiki_id = $wiki->guid;
+	$activity->owner_guid = $actor_guid;
+}
+
+/**
+ * saves new wikiactivities from a wiki to elgg database
+ * @param ElggObject $wiki
+ */
+function sw_update_wiki($wiki) {
+	elgg_load_library("elgg:wikimate");
+	
+	// looking for wikiusers 
+	$users = sw_get_wikiusers($wiki->guid);
+	$users_names = sw_extract($users,'wikiuser_name');
+	$names_users = array_flip($users_names);// this will be sth like ('Mhd'=>4)
+	
+	#FIXME do not permit to add users with the same name (file actions/wikiusers/add.php)
+	
+	// querying wikimate
+	$recent_changes = sw_get_recent_changes($wiki); //limit 10
+	if (count($recent_changes) == 0) return false;  // no changes 
+	
+	foreach ($recent_changes as $recentChange){
+		//if it's an old change
+		if ($recentChange['rcid'] <= $wiki->rcid) continue;
+		//if change is for non defined wikiuser
+		if (! isset($users_names[$recentChange['user']])) continue ;
+		
+		// searching for author and actor
+		$author_id = $names_users[$recentChange['user']];
+		$author = $users[$author_id];
+		$actor_guid = $author->getOwnerGUID();
+		
+		// creating wikiactivity Object
+		$activity = sw_get_wikiactivity($wiki, $actor_guid, $recentChange);
+		
+		// adding activity to the river after saving
+		if (! $activity->save()) continue;
+		add_to_river("river/object/wikiactivity/create'",
+					"create",
+					$actor_guid,
+					$activity->guid
+		);
+		 
+	}
+	$rcts=$recent_changes[0]['timestamp'];
+	$wiki->rcstart = $rcts;
+	$wiki->last_rcid = $results['query']['recentchanges'][0]['rcid'];
+	$wiki->save();
+	return true;
+}
+/**
+ * updates all wikis
+ * saves all new wikiactivities to elgg database
+ */
+function sw_update_all_wikis() {
 	$wikis = elgg_get_entities(array(
 				'type' => 'object',
 				'subtype' => 'wiki'
 				)
 	);
 	foreach ($wikis as $wiki){
-		sw_update_wiki_changes($wiki);
+		sw_update_wiki($wiki);
 	}
 	
 }

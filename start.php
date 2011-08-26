@@ -23,7 +23,7 @@ function socialwiki_init() {
 	elgg_register_library('elgg:wikimate', elgg_get_plugins_path() . 'socialwiki/lib/wikimate/globals.php');
 	
 	elgg_load_library("elgg:socialwiki");
-	elgg_register_plugin_hook_handler('cron', 'minute', 'sw_update_all_changes');
+	elgg_register_plugin_hook_handler('cron', 'minute', 'sw_update_wikis');
 	
 	//registering page handlers
 	elgg_register_page_handler('wiki', 'wiki_page_handler');
