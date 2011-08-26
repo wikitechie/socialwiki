@@ -27,8 +27,8 @@ function sw_update_wiki_changes($wiki) {
 	$changes_count=count($results['query']['recentchanges']);
 	if($results && (count($results)>0) && ($changes_count>0) )
 	{
-		foreach ($results['query']['recentchanges'] as $recentchange){
-			if ($recentchange['rcid'] < $wiki->last_rcid)
+		foreach ($results['query']['recentchanges'] as $key => $recentchange){
+			if ($recentchange['rcid'] > $wiki->last_rcid)
 			{
 				$options = array(
 						'type'		=> 'object',
@@ -63,11 +63,12 @@ function sw_update_wiki_changes($wiki) {
 				}
 				echo "done";
 				echo $wiki->last_rcid;
+				$lastkey = $key;
 			}
 			//recording last time we visited fetched this wiki
-			$rcts=$results['query']['recentchanges'][0]['timestamp'];
+			$rcts=$results['query']['recentchanges'][$lastkey]['timestamp'];
 			$wiki->rcstart = $rcts;
-			$wiki->last_rcid = $results['query']['recentchanges'][0]['rcid'];
+			$wiki->last_rcid = $results['query']['recentchanges'][$lastkey]['rcid'];
 			$wiki->save();
 			
 		}
