@@ -135,6 +135,7 @@ function sw_update_wiki($wiki) {
 		sw_log("saved");
 	}
 	$rcts=$recent_changes[0]['timestamp'];
+	login($wiki->getOwnerEntity());
 	$wiki->rcstart = $rcts;
 	$wiki->last_rcid = $recent_changes[0]['rcid'];
 	$wiki->save();
