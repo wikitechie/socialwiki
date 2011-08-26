@@ -112,9 +112,8 @@ function sw_update_wiki($wiki) {
 	
 	foreach ($recent_changes as $recentChange){
 		//if it's an old change
-		if ($recentChange['rcid'] <= $wiki->last_rcid) continue;
+		if ((int)$recentChange['rcid'] <= (int)$wiki->last_rcid) continue;
 		sw_log("pass_rcid");
-		sw_log(print_r($users,true));
 		//if change is for non defined wikiuser
 		if (! isset($users_names[$recentChange['user']])) continue ;
 		sw_log("user checked");
@@ -137,7 +136,7 @@ function sw_update_wiki($wiki) {
 	}
 	$rcts=$recent_changes[0]['timestamp'];
 	$wiki->rcstart = $rcts;
-	$wiki->last_rcid = $results['query']['recentchanges'][0]['rcid'];
+	$wiki->last_rcid = $recent_changes[0]['rcid'];
 	$wiki->save();
 	return true;
 }
