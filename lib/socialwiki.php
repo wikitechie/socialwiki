@@ -87,7 +87,7 @@ function sw_get_wikiactivity($wiki,$actor_guid,$recentChange){
 	$activity->descritption =  $recentChange['comment'];
 	$activity->access_id = ACCESS_PUBLIC;
 	$activity->wiki_id = $wiki->guid;
-	$activity->owner_guid = $actor_guid;
+	//$activity->owner_guid = $actor_guid;
 	return $activity;
 }
 
