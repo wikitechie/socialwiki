@@ -138,6 +138,7 @@ function sw_update_wiki($wiki) {
 	$wiki->rcstart = $rcts;
 	$wiki->last_rcid = $recent_changes[0]['rcid'];
 	$wiki->save();
+	sw_log($wiki->rcstart);
 	return true;
 }
 /**
