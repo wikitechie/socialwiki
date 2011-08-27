@@ -21,7 +21,7 @@
     elgg_clear_sticky_form('wiki_edit');
     
 	$area = elgg_view_title("Edit wiki!");
-	$area .= elgg_view('output/url', array('text'=>'Delete this wiki!', 'href'=>"action/wiki/delete?guid=$segments[2]", 'is_action'=>true));
+	$area .= elgg_view('output/url', array('text'=>'Delete this wiki!', 'href'=>"action/wiki/delete?guid=$wiki->guid", 'is_action'=>true));
 	
 	$form_vars = array(
 		'enctype' => 'multipart/form-data',
