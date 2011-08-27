@@ -12,7 +12,7 @@
     // start building the main column of the page
     $area2 = elgg_view_title($title);
     
-	elgg_push_breadcrumb(elgg_echo('socialwiki:wikis'),elgg_normalize_url('socialwiki/wikis/all'));
+	elgg_push_breadcrumb(elgg_echo('socialwiki:wikis'),elgg_normalize_url('socialwiki/wiki/all'));
     elgg_push_breadcrumb(elgg_echo('socialwiki:addwiki'));
     
     $form_vars = array(
@@ -21,7 +21,7 @@
 	);
 		 
     // Add the form to this section
-    $area2 .= elgg_view_form("wikis/save", $form_vars);
+    $area2 .= elgg_view_form("wiki/save", $form_vars);
  
     // layout the page
     $body = elgg_view_layout('two_column_left_sidebar', '', $area2);

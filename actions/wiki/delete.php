@@ -5,11 +5,11 @@ $wiki= get_entity($wiki_guid);
 
 	if ($wiki->delete()){ 
 		system_message("Wiki deleted!");
-		forward('socialwiki/wikis/all');
+		forward('socialwiki/wiki/all');
 	}
 	else{ 
 		register_error("Could not pereform deleting action");
-		forward("/socialwiki/wikis/manage/$wiki_guid");
+		forward("/socialwiki/wiki/manage/$wiki_guid");
 	}
 	
 

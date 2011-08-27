@@ -167,3 +167,11 @@ function sw_update_all_wikis() {
 function sw_log($str){
 	if (DEBUG) echo "<pre>$str</pre>";
 }
+
+function sw_validate_url($url)
+{
+	if ( preg_match('|^http(s)?://[a-z0-9-]+(.[a-z0-9-]+)*(:[0-9]+)?(/.*)?$|i', $url))
+		return $url;
+	else
+		return "";
+}

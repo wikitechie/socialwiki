@@ -13,8 +13,8 @@ function socialwiki_init() {
 	elgg_register_entity_type("object","wikiuser");
 	
 	//registering actions
-	elgg_register_action("wikis/save", dirname(__FILE__) . "/actions/wikis/save.php");
-	elgg_register_action("wikis/delete", dirname(__FILE__) . "/actions/wikis/delete.php");
+	elgg_register_action("wiki/save", dirname(__FILE__) . "/actions/wiki/save.php");
+	elgg_register_action("wiki/delete", dirname(__FILE__) . "/actions/wiki/delete.php");
 	elgg_register_action("wikiuser/save", dirname(__FILE__) . "/actions/wikiuser/save.php");
 	elgg_register_action("wikiuser/delete", dirname(__FILE__) . "/actions/wikiuser/delete.php");
 	
@@ -58,27 +58,27 @@ function wiki_page_handler($segments) {
 
 	switch($segments[0]) {
 		case 'add':
-			include (dirname(__FILE__) . '/pages/wikis/add.php');
+			include (dirname(__FILE__) . '/pages/wiki/add.php');
 			break;
 		case "edit":
 			gatekeeper();
 			set_input('wiki_guid', $segments[1]);		
-			include (dirname(__FILE__) . '/pages/wikis/edit.php');
+			include (dirname(__FILE__) . '/pages/wiki/edit.php');
 			break;
 		case 'all':
-			include (dirname(__FILE__) . '/pages/wikis/all.php');				
+			include (dirname(__FILE__) . '/pages/wiki/all.php');				
 			break;
 		case 'recentchanges':
 			set_input('context',$segments[2]);
 			set_input('wiki_guid', $segments[1]);
-			include (dirname(__FILE__) . '/pages/wikis/recentchanges.php');
+			include (dirname(__FILE__) . '/pages/wiki/recentchanges.php');
 			break;
 		case "view":
 			set_input('wiki_guid', $segments[1]);
 			if (isset($segments[2])) set_input("wiki_page", $segments[2]);
 			else set_input("wiki_page", "SETI@Home");
 			#FIXME: "replace Main Page" with the real main page name
-			include (dirname(__FILE__) . '/pages/wikis/view.php');	
+			include (dirname(__FILE__) . '/pages/wiki/view.php');	
 			break;			
 	}
 	
