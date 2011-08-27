@@ -1,4 +1,5 @@
 <?php
+elgg_make_sticky_form('wiki_edit');
 // get the form input
 $values = array(
 	'guid'			=> (int)get_input('guid'),
@@ -7,12 +8,13 @@ $values = array(
 	'api'			=> sw_validate_url(get_input('api')),
 	'description'	=> get_input('body'),
 );
-elgg_make_sticky_form('wiki:save');
+
 $error_forward_url = REFERER;
 $error = FALSE;
 
 #FIXME get_input filter xss ??!!
-if(! $values['guid']){  	
+$guid = $values['guid']; 
+if(! $guid ){  	
   // create a new wiki object
   $wiki = new ElggObject();  
   $wiki->subtype = "wiki";	
@@ -104,7 +106,7 @@ if ((isset($_FILES['icon'])) && (substr_count($_FILES['icon']['type'],'image/'))
   // save to database
 if (! $error) {
 	if ($wiki->save()){
-		elgg_clear_sticky_form('wiki:save');
+		elgg_clear_sticky_form('wiki_edit');
 		system_message(elgg_echo('wiki:message:saved'));
 		// forward user to a page that displays the post
 		forward($wiki->getURL());

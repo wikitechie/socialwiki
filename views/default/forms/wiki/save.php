@@ -1,13 +1,12 @@
 <?php 
 
-$vars['entity'] = get_entity($vars['guid']);
-if ($vars['entity'])
-	echo elgg_view('input/hidden',array('internalname' => 'guid', 'value'=>$vars['entity']->guid));
+
+	echo elgg_view('input/hidden',array('internalname' => 'guid', 'value'=>$vars['guid']));
 	
 ?>
 <div>
     <label>Wiki name</label><br />
-    <?php echo elgg_view('input/text',array('internalname' => 'title', 'value'=>$vars['entity']->title)); ?>
+    <?php echo elgg_view('input/text',array('internalname' => 'title' , 'value' =>  $vars['title'])); ?>
 </div>
 
 <div>
@@ -17,17 +16,17 @@ if ($vars['entity'])
 
 <div>
     <label>Wiki homepage URL</label><br />
-    <?php echo elgg_view('input/text',array('internalname' => 'url', 'value'=>$vars['entity']->url)); ?>
+    <?php echo elgg_view('input/text',array('internalname' => 'url',  'value' =>  $vars['url'])); ?>
 </div> 
 
 <div>
     <label>MediaWiki API URL</label><br />
-    <?php echo elgg_view('input/text',array('internalname' => 'api', 'value'=>$vars['entity']->api)); ?>
+    <?php echo elgg_view('input/text',array('internalname' => 'api',  'value' =>  $vars['api'])); ?>
 </div>
  
 <div>
     <label><?php echo elgg_echo("body"); ?></label><br />
-    <?php echo elgg_view('input/longtext',array('internalname' => 'body', 'value'=>$vars['entity']->description)); ?>
+    <?php echo elgg_view('input/longtext',array('internalname' => 'body', 'value' =>  $vars['body'])); ?>
 </div>
 
 <div>
