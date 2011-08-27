@@ -23,7 +23,10 @@ function socialwiki_init() {
 	elgg_register_library('elgg:wikimate', elgg_get_plugins_path() . 'socialwiki/lib/wikimate/globals.php');
 	
 	elgg_load_library("elgg:socialwiki");
+	// init cron
+	elgg_register_plugin_hook_handler('permissions_check', 'wiki', 'cron_permissions_check');
 	elgg_register_plugin_hook_handler('cron', 'minute', 'sw_update_all_wikis');
+	
 	
 	//registering page handlers
 	elgg_register_page_handler('wiki', 'wiki_page_handler');
@@ -261,5 +264,12 @@ function wikis_setup_sidebar_menus() {
 		
 	
 }
-
+function cron_permissions_check($hook_name, $entity_type, $return_value, $parameters) {
+	if (elgg_get_context() == "cron_wiki_update"){
+		return true;
+	}
+	else{
+		return $return_value;
+	}
+}
 ?>
