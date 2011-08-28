@@ -43,8 +43,8 @@ function socialwiki_init() {
 	
 	elgg_register_plugin_hook_handler('entity:icon:url', 'object', 'wikis_icon_url_override');
 	
-	elgg_register_css('diff','river/elements/css');
-	
+	elgg_register_css('diff', 'mod/socialwiki/views/default/river/elements/css.css');
+	elgg_load_css("diff");
 	
 	
 	//wiki thumbnail

@@ -1,13 +1,4 @@
-<?php
-/**
- * Wikiactivity CSS
- *
- * @package Socialwiki
-*/
-?>
-/*
-** Diff rendering
-*/
+
 table.diff, td.diff-otitle, td.diff-ntitle {
 	background-color: white;
 }
