@@ -79,6 +79,7 @@ $english = array(
 	'wikiuser'=>'Wikiusers',
 	'wikiuser:add'=>'Add a wikiuser',
 	'wikiuser:my'=>'My wikiusers',	
+	'wikiuser:duplication'=>'You already registered %s!'
 );
 
 add_translation('en', $english);

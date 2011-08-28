@@ -94,6 +94,7 @@ function wikiuser_page_handler($segments) {
 		
 	switch($segments[0]) {
 			case 'add':
+				gatekeeper();				
 				include (dirname(__FILE__) . '/pages/wikiuser/add.php');
 			break;
 				break;
@@ -263,34 +264,26 @@ function wikis_setup_sidebar_menus() {
 
 	// Get the page owner entity
 	$page_owner = elgg_get_page_owner_entity();
-
 	
-			elgg_register_menu_item('page', array(
+	$owner_guid = elgg_get_logged_in_user_guid();
+	$context = elgg_get_context();
+	if($context == 'wiki' || $context == 'wikiuser') {
+		elgg_register_menu_item('page', array(
 				'name' => 'wiki:all',
 				'text' => elgg_echo('wiki:all'),
 				'href' => 'wiki/all',
 			));
 
 			$user = elgg_get_logged_in_user_entity();
-			if ($user) {
-				$url =  "groups/owner/$user->username";
-				$item = new ElggMenuItem('groups:owned', elgg_echo('groups:owned'), $url);
-				elgg_register_menu_item('page', $item);
-				$url = "groups/member/$user->username";
-				$item = new ElggMenuItem('groups:member', elgg_echo('groups:yours'), $url);
-				elgg_register_menu_item('page', $item);
-				$url = "groups/invitations/$user->username";
-				$item = new ElggMenuItem('groups:user:invites', elgg_echo('groups:invitations'), $url);
-				elgg_register_menu_item('page', $item);
-				$url = "wikiuser/";
+			if ($user) {				
+				$url = "wikiuser";
 				$item = new ElggMenuItem('wikiuser:my', elgg_echo('wikiuser:my'), $url);
-				elgg_register_menu_item('page', $item);
-				
-				
-			}
-		
+				elgg_register_menu_item('page', $item);				
+			}			
+	}				
 	
 }
+
 function cron_permissions_check($hook_name, $entity_type, $return_value, $parameters) {
 	if (! elgg_instanceof($parameters['entity'],'object','wiki'))
 		return $return_value;
