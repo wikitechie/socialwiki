@@ -77,6 +77,6 @@ echo <<<RIVER
 $menu
 <div class="elgg-river-summary">$summary $wiki_string $group_string <span class="elgg-river-timestamp">$timestamp</span></div>
 $message
-$attachments
+<div class='attachments'>$attachments</div>
 $responses
 RIVER;

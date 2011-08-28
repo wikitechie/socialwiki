@@ -1,5 +1,10 @@
-table.diff {
+div.attachments {
 	display:none;
+	border:thin solid #CCCCCC;
+	padding: 2px 1px 6px 4px;
+	border-radius: 6px;
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
 }
 table.diff, td.diff-otitle, td.diff-ntitle {
 	background-color: white;
