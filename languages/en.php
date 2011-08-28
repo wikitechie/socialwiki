@@ -21,6 +21,8 @@ $english = array(
 	'blog:group' => 'Group blog',
 	'blog:enableblog' => 'Enable group blog',
 	'blog:write' => 'Write a blog post',
+	'wikiactivity:show:diff' => 'Show difference',
+	'wikiactivity:hide:diff' => 'Hide difference',
 
 	// Editing
 	'blog:add' => 'Add blog post',
