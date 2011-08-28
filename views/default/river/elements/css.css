@@ -1,4 +1,6 @@
-
+table.diff {
+	display:none;
+}
 table.diff, td.diff-otitle, td.diff-ntitle {
 	background-color: white;
 }
