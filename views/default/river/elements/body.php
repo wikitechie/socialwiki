@@ -70,13 +70,18 @@ if (get_subtype_from_id($object->subtype) == 'wikiactivity'){
 	$attachments = $object->diff;
 }
 
-
+$toggleDiffStr=elgg_echo("wikiactivity:hide:diff") . "&nbsp^^";
 	
 
 echo <<<RIVER
 $menu
 <div class="elgg-river-summary">$summary $wiki_string $group_string <span class="elgg-river-timestamp">$timestamp</span></div>
 $message
-<div class='attachments'>$attachments</div>
+<div class='attachments'>
+$attachments
+<br/>
+<a href='#toggleDiff' >$toggleDiffStr</a>
+</div>
+
 $responses
 RIVER;
