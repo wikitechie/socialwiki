@@ -87,6 +87,28 @@ function sw_get_wikiactivity($wiki,$actor_guid,$recentChange){
 	$activity->descritption =  $recentChange['comment'];
 	$activity->access_id = ACCESS_PUBLIC;
 	$activity->wiki_id = $wiki->guid;
+	
+	$requester = new Wikimate($wiki->api);
+	$data = array(
+					'prop' => 'revisions',
+					'titles' => $recentChange['title'],
+					'rvdiffto' => 'prev'
+	);
+	$results = $requester->query( $data );
+	
+	$page = array_pop($results['query']['pages']);
+	
+	$myrev = array_pop($page['revisions']);
+	
+	$diff = $myrev['diff']['*'];
+		
+	$diff = "<table class='diff'>
+	<col class='diff-marker' />
+	<col class='diff-content' />
+	<col class='diff-marker' />
+	<col class='diff-content' />". $diff . "</table>";	
+		
+	$activity->diff = $diff;
 	//$activity->owner_guid = $actor_guid;
 	return $activity;
 }

@@ -39,8 +39,12 @@ function socialwiki_init() {
 	// entity menu
 	elgg_register_plugin_hook_handler('register', 'menu:entity', 'wiki_entity_menu_setup');
 	elgg_register_plugin_hook_handler('register', 'menu:entity', 'wikiuser_entity_menu_setup');
+	elgg_register_plugin_hook_handler('register', 'menu:river', 'wikiactivity_river_menu_setup');
 	
 	elgg_register_plugin_hook_handler('entity:icon:url', 'object', 'wikis_icon_url_override');
+	
+	elgg_register_css('diff','river/elements/css');
+	
 	
 	
 	//wiki thumbnail
@@ -150,6 +154,7 @@ function wiki_entity_menu_setup($hook, $type, $return, $params) {
 	return $return;
 }
 
+
 /**
  * Add particular blog links/info to wikiuser menu
  */
@@ -172,6 +177,28 @@ function wikiuser_entity_menu_setup($hook, $type, $return, $params) {
 	return $return;
 }
 }
+
+/**
+ * Add particular blog links/info to wikiuser menu
+ */
+function wikiactivity_river_menu_setup($hook, $type, $return, $params) {
+
+	$item = $params['item'];
+	$object = $item->getObjectEntity();
+	$wiki = get_entity($object->wiki_id);
+	
+	$options = array(
+		'name' => 'diff',
+		'text' => 'View difference',
+		'href' =>  str_replace('api', 'index', $wiki->api) ."?title=".$object->title."&diff=0",
+		'priority' => 150,
+	);
+	
+	array_push($return, ElggMenuItem::factory($options));
+		
+	return $return;
+}
+
 
 
 /**

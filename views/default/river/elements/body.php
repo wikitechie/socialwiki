@@ -66,8 +66,11 @@ if (get_subtype_from_id($object->subtype) == 'wikiactivity'){
 		'text' => $wiki->title
 	));
 	$wiki_string = "in the $wiki_link wiki";
-
+	
+	$attachments = $object->diff;
 }
+
+
 	
 
 echo <<<RIVER
