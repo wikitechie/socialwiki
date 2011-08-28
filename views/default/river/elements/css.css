@@ -1,7 +1,8 @@
-div.attachments {
+div.sliding-extender {
 	display:none;
 	border:thin solid #CCCCCC;
 	padding: 2px 1px 6px 4px;
+	margin-top:4px;
 	border-radius: 6px;
 	-moz-border-radius: 6px;
 	-webkit-border-radius: 6px;

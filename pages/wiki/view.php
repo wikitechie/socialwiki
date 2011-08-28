@@ -15,7 +15,12 @@
     
     
     
-	$wikiusers = elgg_get_entities(array('types'=>'object', 'subtypes'=>'wikiuser'));
+	$wikiusers = elgg_get_entities_from_metadata(array(
+		'types'=>'object', 
+		'subtypes'=>'wikiuser',
+		'metadata_names'=>array('wiki_id'),
+		'metadata_values'=>array($wiki->guid)
+	));
 	if(!$wikiusers)
 		$body .= elgg_view('output/longtext', array('value'=>'There are currently no users wikiing on this wiki!'));
 	else

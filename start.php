@@ -191,9 +191,10 @@ function wikiactivity_river_menu_setup($hook, $type, $return, $params) {
 	
 	$options = array(
 		'name' => 'diff',
-		'text' => 'View difference',
-		'href' =>  "#showdiff",
+		'text' => elgg_echo("wikiactivity:show:diff"),
+		'href' =>  "#toggleDiff",
 		'priority' => 150,
+		'data-nextname'=> elgg_echo("wikiactivity:hide:diff")
 	);
 	
 	array_push($return, ElggMenuItem::factory($options));
