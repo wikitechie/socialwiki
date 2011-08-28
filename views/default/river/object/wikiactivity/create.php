@@ -7,5 +7,5 @@ $object = $vars['item']->getObjectEntity();
 
 echo elgg_view('river/item', array(
 	'item' => $vars['item'],
-	'message' => $object->comment
+	'message' => $object->descritption
 ));
