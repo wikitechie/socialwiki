@@ -45,7 +45,8 @@ function socialwiki_init() {
 	
 	elgg_register_css('diff', 'mod/socialwiki/views/default/river/elements/css.css');
 	elgg_load_css("diff");
-	
+	elgg_register_js("sw:diff", "mod/socialwiki/views/default/river/elements/js.js");
+	elgg_load_js("sw:diff");
 	
 	//wiki thumbnail
 	elgg_register_plugin_hook_handler('entity:icon:url', 'object', 'wikis_icon_url_override');
@@ -191,7 +192,7 @@ function wikiactivity_river_menu_setup($hook, $type, $return, $params) {
 	$options = array(
 		'name' => 'diff',
 		'text' => 'View difference',
-		'href' =>  str_replace('api', 'index', $wiki->api) ."?title=".$object->title."&diff=0",
+		'href' =>  "#showdiff",
 		'priority' => 150,
 	);
 	
