@@ -58,7 +58,7 @@ $english = array(
 	'blog:error:revision_not_found' => 'Cannot find this revision.',
 
 	// river
-	'river:create:object:wikiactivity' => '%s wikied the page %s',
+	'river:create:object:wikiactivity' => '%s wikied the page %s in the %s wiki',
 	'river:comment:object:wikiactivity' => '%s commented on the edit %s',
 	'river:comment:object:wiki' => '%s commented on the wiki %s',
 

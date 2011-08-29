@@ -43,9 +43,9 @@ function socialwiki_init() {
 	
 	elgg_register_plugin_hook_handler('entity:icon:url', 'object', 'wikis_icon_url_override');
 	
-	elgg_register_css('diff', 'mod/socialwiki/views/default/river/elements/css.css');
+	elgg_register_css('diff', 'mod/socialwiki/views/default/diff.css');
 	elgg_load_css("diff");
-	elgg_register_js("sw:diff", "mod/socialwiki/views/default/river/elements/js.js");
+	elgg_register_js("sw:diff", "mod/socialwiki/js/js.js");
 	elgg_load_js("sw:diff");
 	
 	//wiki thumbnail
@@ -187,8 +187,9 @@ function wikiactivity_river_menu_setup($hook, $type, $return, $params) {
 
 	$item = $params['item'];
 	$object = $item->getObjectEntity();
-	$wiki = get_entity($object->wiki_id);
-	
+	if (! elgg_instanceof($object,'object','wikiactivity')){
+		return $return;
+	}
 	$options = array(
 		'name' => 'diff',
 		'text' => elgg_echo("wikiactivity:show:diff"),
