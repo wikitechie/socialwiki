@@ -22,11 +22,18 @@ $object_link = elgg_view('output/url', array(
 	'class' => 'elgg-river-object',
 ));
 
+
+$wiki_link = elgg_view('output/url', array(
+	'href' => $wiki->url,
+	'text' => $wiki->title,
+	'class' => 'elgg-river-object',
+));
+
 $summary = elgg_echo("river:create:object:wikiactivity", array($subject_link, $object_link , $wiki_link));
 
 //diff
 $toggleDiff_link = "<p><a href='#toggleDiff' >" . elgg_echo("wikiactivity:hide:diff") . "</a></p>";
-$page_diff = "<div class='wiki-data sliding-extender'>" . $object->diff . "$toggleDiff_link </div>";
+$page_diff = "<div class='wiki-data sliding-extender'>" . $object->diff . "</div>";
 
 echo elgg_view('river/item', array(
 	'item' => $vars['item'],
