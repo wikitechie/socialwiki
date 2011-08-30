@@ -51,7 +51,7 @@ function socialwiki_init() {
 	//wiki thumbnail
 	elgg_register_plugin_hook_handler('entity:icon:url', 'object', 'wikis_icon_url_override');
 	
-	elgg_register_event_handler('pagesetup', 'system', 'wikis_setup_sidebar_menus');
+	//elgg_register_event_handler('pagesetup', 'system', 'wikis_setup_sidebar_menus');
 	
 	
 	
@@ -62,6 +62,9 @@ function socialwiki_init() {
 function wiki_page_handler($segments) {
 
 	switch($segments[0]) {
+		case 'social_browser':
+			include (dirname(__FILE__) . '/pages/wiki/social_browser.php');			
+			break;
 		case 'add':
 			include (dirname(__FILE__) . '/pages/wiki/add.php');
 			break;
@@ -128,13 +131,13 @@ function wiki_entity_menu_setup($hook, $type, $return, $params) {
 		return $return;
 	}
 
-	$options = array(
+/*	$options = array(
 		'name' => 'permalink',
 		'text' => 'Permalink',
 		'href' => $entity->getURL(),
 		'priority' => 150,
 	);
-	array_push($return, ElggMenuItem::factory($options));
+	array_push($return, ElggMenuItem::factory($options));*/
 	
 	$options = array(
 		'name' => 'url',
@@ -144,13 +147,13 @@ function wiki_entity_menu_setup($hook, $type, $return, $params) {
 	);
 	array_push($return, ElggMenuItem::factory($options));	
 	
-	$options = array(
+/*	$options = array(
 		'name' => 'recentchanges',
 		'text' => 'Recent changes',
 		'href' => elgg_normalize_url('activity/all?type=object&subtype=wikiactivity'),
 		'priority' => 150,
 	);
-	array_push($return, ElggMenuItem::factory($options));	
+	array_push($return, ElggMenuItem::factory($options));	*/
 	
 
 	return $return;
@@ -218,8 +221,11 @@ function wiki_url_handler($entity) {
 	}
 
 	$friendly_title = elgg_get_friendly_title($entity->title);
-
-	return "wiki/view/{$entity->guid}/$friendly_title";
+	
+	if (elgg_is_active_plugin('elgg-facebook_theme'))
+		return "wiki/profile/{$entity->guid}/$friendly_title";
+	else
+		return "wiki/view/{$entity->guid}/$friendly_title";
 }
 
 /**
