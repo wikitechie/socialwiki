@@ -9,4 +9,23 @@ $(window).ready(function() {
 		container.slideToggle('slow');
 		
 	});
+	
+	$("a[href='#socialBrowser']").click(function(){
+		var dialog = $(".jq-dialog");
+		var src = $(dialog).attr("src");
+		$(dialog).html(" ");
+		$("<iframe/>",{
+			src		: src,
+			title	: "Social Browser",
+			width	: "100%",
+			height	: "98%"
+		}).appendTo(".jq-dialog");
+		$(".jq-dialog").dialog("destroy");
+		$(".jq-dialog").dialog({
+			height	: 600,
+			width	: "75%",
+			modal	: true,
+		});
+		
+	});	
 });
