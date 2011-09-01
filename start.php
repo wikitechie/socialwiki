@@ -273,7 +273,7 @@ function wikis_setup_sidebar_menus() {
 
 	// Get the page owner entity
 	$page_owner = elgg_get_page_owner_entity();
-	
+
 	$owner_guid = elgg_get_logged_in_user_guid();
 	$context = elgg_get_context();
 	if($context == 'wiki' || $context == 'wikiuser') {
