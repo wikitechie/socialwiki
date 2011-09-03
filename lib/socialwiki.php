@@ -148,8 +148,10 @@ function sw_update_wiki($wiki) {
 		// creating wikiactivity Object
 		$activity = sw_get_wikiactivity($wiki, $actor_guid, $recentChange);
 		
+		elgg_set_context('socialwiki_cron');		
 		// adding activity to the river after saving
 		if (! $activity->save()) continue;
+		
 		add_to_river("river/object/wikiactivity/create",
 					"create",
 					$actor_guid,
