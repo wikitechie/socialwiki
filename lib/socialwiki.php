@@ -147,8 +147,7 @@ function sw_update_wiki($wiki) {
 		
 		// creating wikiactivity Object
 		$activity = sw_get_wikiactivity($wiki, $actor_guid, $recentChange);
-		
-		elgg_set_context('socialwiki_cron');		
+
 		// adding activity to the river after saving
 		if (! $activity->save()) continue;
 		
@@ -160,17 +159,13 @@ function sw_update_wiki($wiki) {
 		sw_log("saved");
 	}
 	$rcts=$recent_changes[0]['timestamp'];
-	//login($wiki->getOwnerEntity());
-	$context = elgg_get_context();
-	// setting cron context to granting WRITE access to wiki Objects
-	elgg_set_context("cron_wiki_update");
 	
 	$wiki->rcstart = $rcts;
 	$wiki->last_rcid = $recent_changes[0]['rcid'];
 	$wiki->save();
 	sw_log($wiki->rcstart);
 	// returning to the last context
-	elgg_set_context($context);
+
 	return true;
 }
 /**
@@ -178,6 +173,9 @@ function sw_update_wiki($wiki) {
  * saves all new wikiactivities to elgg database
  */
 function sw_update_all_wikis() {
+	$context = elgg_get_context();
+	// setting cron context to granting WRITE access to wiki Objects
+	elgg_set_context("cron_wiki_update");
 	$wikis = elgg_get_entities(array(
 				'type' => 'object',
 				'subtype' => 'wiki'
@@ -186,7 +184,7 @@ function sw_update_all_wikis() {
 	foreach ($wikis as $wiki){
 		sw_update_wiki($wiki);
 	}
-	
+	elgg_set_context($context);
 }
 
 function sw_log($str){
