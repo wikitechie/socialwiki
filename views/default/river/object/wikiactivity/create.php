@@ -20,6 +20,7 @@ $object_link = elgg_view('output/url', array(
 	'href' => $object_url,
 	'text' => $object->title ? $object->title : $object->name,
 	'class' => 'elgg-river-object',
+	'target' => '_blank'
 ));
 
 
@@ -27,6 +28,7 @@ $wiki_link = elgg_view('output/url', array(
 	'href' => $wiki->url,
 	'text' => $wiki->title,
 	'class' => 'elgg-river-object',
+	'target' => '_blank'
 ));
 
 $summary = elgg_echo("river:create:object:wikiactivity", array($subject_link, $object_link , $wiki_link));
