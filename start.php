@@ -294,7 +294,9 @@ function wikis_setup_sidebar_menus() {
 }
 
 function cron_permissions_check($hook_name, $entity_type, $return_value, $parameters) {
-	if (! elgg_instanceof($parameters['entity'],'object','wiki'))
+	if	(!(	elgg_instanceof($parameters['entity'],'object','wiki') 
+		 || elgg_instanceof($parameters['entity'],'object','wikiactivity')
+		))
 		return $return_value;
 	if (elgg_get_context() == "cron_wiki_update"){
 		return true;
