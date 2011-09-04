@@ -9,7 +9,7 @@ $(window).ready(function() {
 		container.slideToggle('slow');
 		
 	});
-	
+/*	
 	$("a[href='#socialBrowser']").click(function(){
 		var dialog = $(".jq-dialog");
 		var src = $(dialog).attr("src");
@@ -27,5 +27,13 @@ $(window).ready(function() {
 			modal	: true,
 		});
 		
-	});	
+	});
+	*/
+	$("a[href='#socialBrowser']").click(function(){
+		var dialog = $(".jq-dialog");
+		var src = $(dialog).attr("src");
+		newWindow = window.open(src,'SocialBrowser',"width=900,height=600");
+		if (window.focus) {newwindow.focus();}
+		return false;
+	});
 });
