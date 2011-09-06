@@ -46,7 +46,9 @@
 	// owner is logged in user
 	$wikiuser->owner_guid = $owner_guid;
 	
-	 
+	 if(!sw_user_check($username,$password,$wiki_id)){
+  	  	forward('/wikiuser/add/' .  $guid);
+  	  }
 	// save to database
 	$wikiuser->save();
 	  
