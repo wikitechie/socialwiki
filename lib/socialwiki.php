@@ -64,7 +64,7 @@ function sw_get_recent_changes($wiki,$rclimit=10)
 	$requester = new Wikimate($wiki->api);
 	$data = array(
 					'list' => 'recentchanges',
-					'rcprop' => 'user|comment|timestamp|title|ids|sizes|redirect|loginfo|flags',
+					'rcprop' => 'user|comment|proptimestamp|title|ids|sizes|redirect|loginfo|flags',
 					'rcend' => $wiki->rcstart,		
 					'rclimit' => $rclimit
 	);
@@ -89,12 +89,23 @@ function sw_get_wikiactivity($wiki,$actor_guid,$recentChange){
 	$activity->access_id = ACCESS_PUBLIC;
 	$activity->wiki_id = $wiki->guid;
 	$activity->container_guid = $wiki->guid;
+	$activity->revision_id =$recentChange['revid'];
 	
+
+	//$activity->owner_guid = $actor_guid;
+	return $activity;
+}
+
+/**
+ * updates the difference of wikiactivities
+ * @param ElggObject $activity
+ */
+function sw_update_wiki_diff($activity) {
 	$requester = new Wikimate($wiki->api);
 	$data = array(
-					'prop' => 'revisions',
-					'titles' => $recentChange['title'],
-					'rvdiffto' => 'prev'
+						'prop' => 'revisions',
+						'rvdiffto' => 'prev',
+						'rvstartid' => $activity->revision_id
 	);
 	$results = $requester->query( $data );
 	
@@ -103,16 +114,15 @@ function sw_get_wikiactivity($wiki,$actor_guid,$recentChange){
 	$myrev = array_pop($page['revisions']);
 	
 	$diff = $myrev['diff']['*'];
-		
+	
 	$diff = "<table class='diff'>
-	<col class='diff-marker' />
-	<col class='diff-content' />
-	<col class='diff-marker' />
-	<col class='diff-content' />". $diff . "</table>";	
-		
+		<col class='diff-marker' />
+		<col class='diff-content' />
+		<col class='diff-marker' />
+		<col class='diff-content' />". $diff . "</table>";	
+	
 	$activity->diff = $diff;
-	//$activity->owner_guid = $actor_guid;
-	return $activity;
+	$activity->save();
 }
 
 /**
