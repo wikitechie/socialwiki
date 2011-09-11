@@ -42,7 +42,8 @@ function sw_get_wikiusers($wiki_guid)
 		'type'		=> 'object',
 		'subtype'	=> 'wikiuser',
 		'relationshiop' => 'wiki_member',
-		'relationship_guid' => $wiki_guid,				
+		'relationship_guid' => $wiki_guid,
+		'inverse_relationship'=> true,					
 	);
 	
 	$users = elgg_get_entities_from_relationship($options);

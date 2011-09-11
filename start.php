@@ -98,7 +98,8 @@ function wikiuser_page_handler($segments) {
 		
 	switch($segments[0]) {
 			case 'add':
-				gatekeeper();				
+				gatekeeper();	
+				set_input('wiki_id', $segments[2]);	
 				include (dirname(__FILE__) . '/pages/wikiuser/add.php');
 			break;
 				break;
