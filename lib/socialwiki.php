@@ -126,8 +126,6 @@ function sw_update_wiki($wiki) {
 	$users_names = sw_extract($users,'wikiuser_name');
 	$users_names = array_flip($users_names);// this will be sth like ('Mhd'=>4)
 	
-	#FIXME do not permit to add users with the same name (file actions/wikiusers/add.php)
-	
 	// querying wikimate
 	$recent_changes = sw_get_recent_changes($wiki); //limit 10
 	sw_log(print_r($recent_changes,true));

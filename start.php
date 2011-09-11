@@ -142,7 +142,7 @@ function wiki_entity_menu_setup($hook, $type, $return, $params) {
 	$options = array(
 		'name' => 'url',
 		'text' => 'URL',
-		'href' => $entity->url,
+		'href' => $entity->wiki_url,
 		'priority' => 150,
 	);
 	array_push($return, ElggMenuItem::factory($options));	
