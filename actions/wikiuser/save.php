@@ -27,7 +27,8 @@
 		
 		if ($users){
 			register_error(elgg_echo('wikiuser:duplication',array($username)));
-			forward('/wikiuser/add');			
+			forward(REFERER);
+						
 		}
   }
   else {
@@ -46,18 +47,26 @@
 	// owner is logged in user
 	$wikiuser->owner_guid = $owner_guid;
 	
-	 if(!sw_user_check($username,$password,$wiki_id)){
-  	  	forward('/wikiuser/add/' .  $guid);
-  	  }
+ 	if(!sw_user_check($username, $password, $wiki_id)) {
+		forward(REFERER);
+	}
 	// save to database
 	$wikiuser->save();
 	  
 	$wikiuser->password = $password;
-	$wikiuser->wiki_id = $wiki_id;
+	
 	 
-	$wikiuser->save();	  
-	forward('/wikiuser');
-			
+	$wikiuser->save();
+	
+	
+	
+	add_entity_relationship($wiki_id, 'wiki_father', $owner_guid);	
+	add_entity_relationship($wikiuser->guid, 'wiki_member', $wiki_id );
+
+	$wikiuser->wiki_id = $wiki_id;
+	$wikiuser->save();
+		
+	forward(get_entity($wiki_id)->getURL());			
 	
   
 ?>

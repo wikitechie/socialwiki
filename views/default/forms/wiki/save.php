@@ -16,7 +16,7 @@
 
 <div>
     <label>Wiki homepage URL</label><br />
-    <?php echo elgg_view('input/text',array('internalname' => 'url',  'value' =>  $vars['url'])); ?>
+    <?php echo elgg_view('input/text',array('internalname' => 'wiki_url',  'value' =>  $vars['wiki_url'])); ?>
 </div> 
 
 <div>

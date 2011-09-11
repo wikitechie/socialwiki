@@ -4,7 +4,7 @@ elgg_make_sticky_form('wiki_edit');
 $values = array(
 	'guid'			=> (int)get_input('guid'),
 	'title'			=> get_input('title'),
-	'url'			=> sw_validate_url(get_input('url')),
+	'wiki_url'			=> sw_validate_url(get_input('wiki_url')),
 	'api'			=> sw_validate_url(get_input('api')),
 	'description'	=> get_input('body'),
 );
@@ -31,7 +31,7 @@ else {
 } 
   
 // assigning and checking
-$required = array('title','api','url');
+$required = array('title','api','wiki_url');
 foreach ($values as $name => $value) {
 	if (in_array($name, $required) && empty($value)) {
 		$error = elgg_echo("wiki:error:wrong:$name");

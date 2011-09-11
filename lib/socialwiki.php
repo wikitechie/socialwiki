@@ -39,14 +39,15 @@ function sw_extract($array,$member_name){
 function sw_get_wikiusers($wiki_guid)
 {
 	$options = array(
-			'type'		=> 'object',
-			'subtype'	=> 'wikiuser',
-			'metadata_name_value_pairs' => array(
-				array('name' => 'wiki_id','value' => $wiki_guid)
-			),
-			'metadata_name_value_pairs_operator' => 'AND'
+		'type'		=> 'object',
+		'subtype'	=> 'wikiuser',
+		'relationshiop' => 'wiki_member',
+		'relationship_guid' => $wiki_guid,
+		'inverse_relationship'=> true,					
 	);
-	$users = elgg_get_entities_from_metadata($options);
+	
+	$users = elgg_get_entities_from_relationship($options);
+	
 	return $users;
 }
 
@@ -126,7 +127,7 @@ function sw_update_wiki($wiki) {
 	$users_names = sw_extract($users,'wikiuser_name');
 	$users_names = array_flip($users_names);// this will be sth like ('Mhd'=>4)
 	
-	#FIXME do not permit to add users with the same name (file actions/wikiusers/add.php)
+	print_r($users_names);
 	
 	// querying wikimate
 	$recent_changes = sw_get_recent_changes($wiki); //limit 10

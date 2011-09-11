@@ -1,13 +1,31 @@
 <?php 
 
-if ($vars['entity'])
+if ($vars['entity']){
 	echo elgg_view('input/hidden',array('internalname' => 'guid', 'value'=>$vars['entity']->guid));
+	$wiki_id = $vars['entity']->wiki_id;
+}
+
+if($vars['wiki_id'])
+	$wiki_id = $vars['wiki_id'];
+
+
 	
+
 ?>
 
 <div>
 <label>Wiki:</label>
-<?php echo elgg_view('input/dropdown', array('internalname'=>'wiki_id','options_values'=>$vars['options'], 'value'=>$vars['entity']->wiki_id));?>
+<?php
+if(!$wiki_id) 
+	echo elgg_view('input/dropdown', array('internalname'=>'wiki_id','options_values'=>$vars['options'], 'value'=>$vars['entity']->wiki_id));
+else {
+	$wiki = get_entity($wiki_id);
+	echo $wiki->title;
+	echo elgg_view('input/hidden',array('internalname' => 'wiki_id', 'value'=>$wiki_id));
+	
+}
+
+?>
     
 </div>
 

@@ -98,7 +98,8 @@ function wikiuser_page_handler($segments) {
 		
 	switch($segments[0]) {
 			case 'add':
-				gatekeeper();				
+				gatekeeper();	
+				set_input('wiki_id', $segments[2]);	
 				include (dirname(__FILE__) . '/pages/wikiuser/add.php');
 			break;
 				break;
@@ -142,7 +143,7 @@ function wiki_entity_menu_setup($hook, $type, $return, $params) {
 	$options = array(
 		'name' => 'url',
 		'text' => 'URL',
-		'href' => $entity->url,
+		'href' => $entity->wiki_url,
 		'priority' => 150,
 	);
 	array_push($return, ElggMenuItem::factory($options));	
