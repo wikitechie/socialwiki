@@ -55,7 +55,13 @@
 	$wikiuser->password = $password;
 	$wikiuser->wiki_id = $wiki_id;
 	 
-	$wikiuser->save();	  
+	$wikiuser->save();
+
+	
+	add_entity_relationship($wiki_id, 'wiki_father', $owner_guid);	
+	add_entity_relationship($wikiuser->guid, 'wiki_member', $wiki_id);	
+	
+	
 	forward('/wikiuser');
 			
 	
