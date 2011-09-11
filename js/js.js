@@ -1,14 +1,16 @@
 $(window).ready(function() {
+	
 	$("a[href='#toggleDiff']").click(function() {
-		var riverItem = $(this).parent().parent().parent().parent();
+		var riverItem = $(this).parentsUntil(".elgg-item").last().parent();
 		var container = riverItem.find("div.sliding-extender");
 		if ( $(container).html() == ""){
-			var riverItemId = $(riverItem).attr("id").match(/(.*)-(.d+)/)[2];
+			var riverItemId = $(riverItem).attr("id").match(/(.*)-(\d+)/)[2];
 			$(container).addClass("elgg-ajax-loader");
-			elgg.view('wikiactivity/get_diff',{
+			elgg.view('river/object/wikiactivity/get_diff',{
 				data:{id:riverItemId},
 				target: $(container),
-				success:function() {
+				success:function(data) {
+					$(container).html(data);
 					$(container).removeClass("elgg-ajax-loader");
 				}
 			});
@@ -18,7 +20,7 @@ $(window).ready(function() {
 		all_links.html($(this).attr('data-nextname'));
 		all_links.attr('data-nextname',$nextname);
 		container.slideToggle('slow');
-		
+		return false;
 	});
 /*	
 	$("a[href='#socialBrowser']").click(function(){
