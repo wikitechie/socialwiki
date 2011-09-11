@@ -2,6 +2,17 @@ $(window).ready(function() {
 	$("a[href='#toggleDiff']").click(function() {
 		var riverItem = $(this).parent().parent().parent().parent();
 		var container = riverItem.find("div.sliding-extender");
+		if ( $(container).html() == ""){
+			var riverItemId = $(riverItem).attr("id").match(/(.*)-(.d+)/)[2];
+			$(container).addClass("elgg-ajax-loader");
+			elgg.view('wikiactivity/get_diff',{
+				data:{id:riverItemId},
+				target: $(container),
+				success:function() {
+					$(container).removeClass("elgg-ajax-loader");
+				}
+			});
+		}
 		all_links = riverItem.find("a[href='#toggleDiff']"); // to get all links not this only
 		$nextname = all_links.html(); 
 		all_links.html($(this).attr('data-nextname'));
