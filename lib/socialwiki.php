@@ -90,7 +90,7 @@ function sw_get_wikiactivity($wiki,$actor_guid,$recentChange){
 	$activity->wiki_id = $wiki->guid;
 	$activity->container_guid = $wiki->guid;
 	$activity->revision_id =$recentChange['revid'];
-	
+	$activity->diff	= "";
 
 	//$activity->owner_guid = $actor_guid;
 	return $activity;
@@ -101,6 +101,7 @@ function sw_get_wikiactivity($wiki,$actor_guid,$recentChange){
  * @param ElggObject $activity
  */
 function sw_update_wiki_diff($activity) {
+	$wiki = $activity->getContainerEntity();
 	$requester = new Wikimate($wiki->api);
 	$data = array(
 						'prop' => 'revisions',
