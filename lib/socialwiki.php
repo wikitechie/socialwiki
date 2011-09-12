@@ -103,16 +103,18 @@ function sw_get_wikiactivity($wiki,$actor_guid,$recentChange){
 function sw_update_wiki_diff($activity) {
 	$wiki = $activity->getContainerEntity();
 	$requester = new Wikimate($wiki->api);
+	
 	$data = array(
-						'prop' => 'revisions',
-						'rvdiffto' => 'prev',
-						'rvstartid' => $activity->revision_id
+						'prop'		=> 'revisions',
+						'rvdiffto'	=> 'prev',
+						'titles'	=> $activity->title,
+						'rvstartid'	=> $activity->revision_id
 	);
 	$results = $requester->query( $data );
 	
 	$page = array_pop($results['query']['pages']);
 	
-	$myrev = array_pop($page['revisions']);
+	$myrev = $page['revisions'][0];
 	
 	$diff = $myrev['diff']['*'];
 	

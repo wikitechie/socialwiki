@@ -1,5 +1,5 @@
 <?php
-echo "asd";
+	elgg_load_library("elgg:wikimate");
 	$id = (int)$vars['id'];
 	/** @var ElggRiverItem */
 	$item = elgg_get_river(array('ids'=>$id));
