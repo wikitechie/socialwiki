@@ -6,6 +6,8 @@ div.sliding-extender {
 	border-radius: 6px;
 	-moz-border-radius: 6px;
 	-webkit-border-radius: 6px;
+	max-height: 200px;
+	overflow: auto;
 }
 table.diff, td.diff-otitle, td.diff-ntitle {
 	background-color: white;
