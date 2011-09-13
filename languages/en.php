@@ -59,8 +59,11 @@ $english = array(
 
 	// river
 	'river:create:object:wikiactivity' => '%s wikied the page %s in the %s wiki',
+	'river:onwikiwall'=> 'on the %s wiki wall',
 	'river:comment:object:wikiactivity' => '%s commented on the edit %s',
 	'river:comment:object:wiki' => '%s commented on the wiki %s',
+	'river:create:object:thewire' => "%s made a post",
+
 
 	// notifications
 	'blog:newpost' => 'A new blog post',

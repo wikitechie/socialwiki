@@ -49,12 +49,8 @@ function socialwiki_init() {
 	elgg_load_js("sw:diff");
 	
 	//wiki thumbnail
-	elgg_register_plugin_hook_handler('entity:icon:url', 'object', 'wikis_icon_url_override');
-	
-	//elgg_register_event_handler('pagesetup', 'system', 'wikis_setup_sidebar_menus');
-	
-	
-	
+	elgg_register_plugin_hook_handler('entity:icon:url', 'object', 'wikis_icon_url_override');	
+	//elgg_register_event_handler('pagesetup', 'system', 'wikis_setup_sidebar_menus');	
 	
 }
  
@@ -188,12 +184,14 @@ function wikiuser_entity_menu_setup($hook, $type, $return, $params) {
  * Add particular blog links/info to wikiuser menu
  */
 function wikiactivity_river_menu_setup($hook, $type, $return, $params) {
-
+	
 	$item = $params['item'];
 	$object = $item->getObjectEntity();
+	
 	if (! elgg_instanceof($object,'object','wikiactivity')){
 		return $return;
 	}
+	
 	$options = array(
 		'name' => 'diff',
 		'text' => elgg_echo("wikiactivity:show:diff"),
@@ -203,7 +201,7 @@ function wikiactivity_river_menu_setup($hook, $type, $return, $params) {
 	);
 	
 	array_push($return, ElggMenuItem::factory($options));
-		
+	
 	return $return;
 }
 
