@@ -64,7 +64,7 @@ function sw_get_recent_changes($wiki,$rclimit=10)
 	$requester = new Wikimate($wiki->api);
 	$data = array(
 					'list' => 'recentchanges',
-					'rcprop' => 'user|comment|proptimestamp|title|ids|sizes|redirect|loginfo|flags',
+					'rcprop' => 'user|comment|timestamp|title|ids|sizes|redirect|loginfo|flags',
 					'rcend' => $wiki->rcstart,		
 					'rclimit' => $rclimit
 	);
@@ -135,17 +135,21 @@ function sw_update_wiki_diff($activity) {
 function sw_update_wiki($wiki) {
 	elgg_load_library("elgg:wikimate");
 	
-	// looking for wikiusers 
+	
+	// querying wikimate
+	$recent_changes = sw_get_recent_changes($wiki); //limit 10
+	sw_log(print_r($recent_changes,true));
+	if (count($recent_changes) == 0) return false;  // no changes
+	$rcts=$recent_changes[0]['timestamp'];
+	sw_log($rcts);
+	sw_log($wiki->rcstart);
+	if ((int)$recent_changes[0]['rcid'] <= (int)$wiki->last_rcid) return false;
+	// looking for wikiusers
 	$users = sw_get_wikiusers($wiki->guid);
 	$users_names = sw_extract($users,'wikiuser_name');
 	$users_names = array_flip($users_names);// this will be sth like ('Mhd'=>4)
 	
 	print_r($users_names);
-	
-	// querying wikimate
-	$recent_changes = sw_get_recent_changes($wiki); //limit 10
-	sw_log(print_r($recent_changes,true));
-	if (count($recent_changes) == 0) return false;  // no changes 
 	
 	foreach ($recent_changes as $recentChange){
 		//if it's an old change
@@ -172,9 +176,9 @@ function sw_update_wiki($wiki) {
 		);
 		sw_log("saved");
 	}
-	$rcts=$recent_changes[0]['timestamp'];
 	
 	$wiki->rcstart = $rcts;
+	
 	$wiki->last_rcid = $recent_changes[0]['rcid'];
 	$wiki->save();
 	sw_log($wiki->rcstart);
@@ -202,7 +206,12 @@ function sw_update_all_wikis() {
 }
 
 function sw_log($str){
-	if (DEBUG) echo "<pre>$str</pre>";
+	if (DEBUG) {
+		if ($str)
+			echo "<pre> $str </pre>";
+		else
+			echo "<pre> no value </pre>";
+	}
 }
 
 function sw_validate_url($url)
