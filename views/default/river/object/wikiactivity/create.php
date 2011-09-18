@@ -25,14 +25,7 @@ $object_link = elgg_view('output/url', array(
 
 
 $wiki_link = elgg_view('output/url', array(
-	'href' => $wiki->url,
-	'text' => $wiki->title,
-	'class' => 'elgg-river-object',
-	'target' => '_blank'
-));
-
-$wiki_link = elgg_view('output/url', array(
-	'href' => $wiki->url,
+	'href' => $wiki->getURL(),
 	'text' => $wiki->title,
 	'class' => 'elgg-river-object',
 	'target' => '_blank'
