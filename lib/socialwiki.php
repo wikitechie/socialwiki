@@ -226,16 +226,17 @@ function sw_user_check($username,$password,$wiki_id)
 {
 	elgg_load_library("elgg:wikimate");
 	$wiki=get_entity($wiki_id);
-	@$checker= new Wikimate($wiki->api,$username,$password);
-	 $error = $checker->getError();
-     if (isset($error['login'])) {
+	$checker= new Wikimate($wiki->api,$username,$password);
+	if($checker){
+	 	$error = $checker->getError();
+     		if (isset($error['login'])) {
 		register_error("username or password is invaild !");
 		return FALSE;
-	}
+		}
 	
-	else{
-		system_message("Wikiuser added!");
-		return TRUE;
+		else{
+			system_message("Wikiuser added!");
+			return TRUE;
+		}
 	}
-	
 }
