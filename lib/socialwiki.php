@@ -156,6 +156,7 @@ function sw_update_wiki($wiki) {
 		if ((int)$recentChange['rcid'] <= (int)$wiki->last_rcid) continue;
 		sw_log("pass_rcid");
 		//if change is for non defined wikiuser
+		$recentChange['user'] = strtolower($recentChange['user']);
 		if (! isset($users_names[$recentChange['user']])) continue ;
 		sw_log("user checked");
 		// searching for author and actor
