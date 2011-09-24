@@ -148,6 +148,7 @@ function sw_update_wiki($wiki) {
 	$users = sw_get_wikiusers($wiki->guid);
 	$users_names = sw_extract($users,'wikiuser_name');
 	$users_names = array_flip($users_names);// this will be sth like ('Mhd'=>4)
+	$users_names = array_change_key_case($users_names);
 	
 	print_r($users_names);
 	
