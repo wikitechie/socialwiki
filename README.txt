@@ -1,1 +1,1 @@
-==page heirarcy=====wiki management pages===/wikis/: displays list of all wikis/wikis/wikiName : displays wiki profile/wikis/add : adding a new wiki to the system/wikis/manage/wikiName: editing details of a wiki
+==What is this==socialwiki is a project to link social networks to wikis ,so they get recent changes as items to like , comment and share them==page heirarcy=====wiki management pages===/wikis/: displays list of all wikis/wikis/wikiName : displays wiki profile/wikis/add : adding a new wiki to the system/wikis/manage/wikiName: editing details of a wiki
